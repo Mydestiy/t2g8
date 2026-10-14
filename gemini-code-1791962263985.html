@@ -1,0 +1,2247 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đề Thi Tiếng Anh TEST 2 - Ms Lê Hằng English</title>
+  <!-- Google Fonts: Nunito & Quicksand -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <style>
+    :root {
+      --primary-purple: #8854C0;
+      --primary-pink: #FD79A8;
+      --primary-yellow: #FDCB6E;
+      --primary-teal: #00C9A7;
+      --primary-blue: #0984E3;
+      --correct-green: #00D26A;
+      --correct-green-shadow: #00a352;
+      --wrong-red: #FF4757;
+      --wrong-red-shadow: #d63031;
+      --card-bg: rgba(255, 255, 255, 0.96);
+      --text-main: #2D3436;
+      --text-muted: #636E72;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Nunito', 'Quicksand', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      min-height: 100vh;
+      color: var(--text-main);
+      background: linear-gradient(180deg, #bbf2f6 0%, #d8e8f8 25%, #fedacb 60%, #fed1c0 85%, #fca289 100%);
+      position: relative;
+      overflow-x: hidden;
+      padding: 16px 12px 140px;
+    }
+
+    /* Bầu trời, Mặt trời phát sáng & Mây trôi */
+    .sky-decorations {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .sun-glow {
+      position: absolute;
+      top: 25px;
+      left: -20px;
+      width: 140px;
+      height: 140px;
+      background: radial-gradient(circle, #ffeaa7 40%, rgba(255, 234, 167, 0.4) 70%, transparent 100%);
+      border-radius: 50%;
+      filter: blur(10px);
+      animation: pulseSun 6s ease-in-out infinite alternate;
+    }
+
+    @keyframes pulseSun {
+      0% { transform: scale(0.95); opacity: 0.8; }
+      100% { transform: scale(1.1); opacity: 1; }
+    }
+
+    .floating-cloud {
+      position: absolute;
+      fill: rgba(255, 255, 255, 0.75);
+      animation: floatCloud linear infinite;
+    }
+
+    .cloud-1 { top: 60px; left: -120px; width: 140px; animation-duration: 48s; }
+    .cloud-2 { top: 180px; left: -160px; width: 180px; animation-duration: 65s; animation-delay: -25s; }
+
+    @keyframes floatCloud {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(calc(100vw + 250px)); }
+    }
+
+    /* Dãy phố Skyline & Con đường vỉa hè sọc đỏ trắng */
+    .city-backdrop {
+      position: fixed;
+      bottom: 42px;
+      left: 0;
+      width: 100%;
+      height: 150px;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.55;
+      background-repeat: repeat-x;
+      background-position: bottom center;
+      background-size: 550px 140px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 550 140'%3E%3Cpath fill='%23a5cbf5' d='M0,140 L0,70 L30,70 L30,50 L45,50 L45,30 L60,30 L60,70 L90,70 L90,140 Z M100,140 L100,40 L140,40 L140,140 Z M150,140 L150,65 L180,65 L180,140 Z M190,140 L190,20 L230,20 L230,140 Z M240,140 L240,55 L280,55 L280,140 Z M290,140 L290,35 L330,35 L330,140 Z M340,140 L340,75 L380,75 L380,140 Z M390,140 L390,15 L430,15 L430,140 Z M440,140 L440,60 L490,60 L490,140 Z M500,140 L500,45 L540,45 L540,140 Z'/%3E%3C/svg%3E");
+    }
+
+    .bottom-road {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 44px;
+      background: #4b4b4b;
+      border-top: 5px solid #2ed573;
+      z-index: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      overflow: hidden;
+    }
+
+    .road-curb {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: repeating-linear-gradient(90deg, #ff4757, #ff4757 25px, #ffffff 25px, #ffffff 50px);
+    }
+
+    .road-line {
+      height: 6px;
+      width: 45px;
+      background: #ffffff;
+      border-radius: 3px;
+      opacity: 0.9;
+    }
+
+    .container {
+      max-width: 880px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Top Sticky Bar */
+    .top-sticky-bar {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      padding: 10px 16px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+      border: 2px solid #ffffff;
+      margin-bottom: 14px;
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 10px;
+      z-index: 100;
+    }
+
+    .progress-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .star-score-pill {
+      background: linear-gradient(135deg, #ff7675, #e84393);
+      color: white;
+      font-weight: 900;
+      font-size: 0.88rem;
+      padding: 4px 12px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      box-shadow: 0 3px 0 #d63031;
+      white-space: nowrap;
+    }
+
+    .progress-track {
+      flex: 1;
+      height: 14px;
+      background: #E2E8F0;
+      border-radius: 999px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #00C9A7, #00D26A);
+      border-radius: 999px;
+      transition: width 0.4s ease;
+    }
+
+    .progress-count-pill {
+      background: #00C9A7;
+      color: white;
+      font-weight: 900;
+      font-size: 0.88rem;
+      padding: 4px 12px;
+      border-radius: 999px;
+      box-shadow: 0 3px 0 #008770;
+      white-space: nowrap;
+    }
+
+    .teacher-contact-pill {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 6px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #2D3436;
+      padding-top: 4px;
+      border-top: 1px dashed #E2E8F0;
+    }
+
+    .teacher-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 800;
+      color: #6C5CE7;
+    }
+
+    .phone-tag {
+      background: #FF7675;
+      color: white;
+      padding: 2px 8px;
+      border-radius: 8px;
+      font-weight: 800;
+      font-size: 0.8rem;
+    }
+
+    /* Hero Banner */
+    .unit-hero-card {
+      background: #FFFFFF;
+      border-radius: 28px;
+      padding: 22px 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+      border: 3px solid #FFFFFF;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-content {
+      max-width: 72%;
+    }
+
+    .unit-badge {
+      display: inline-block;
+      background: #0984E3;
+      color: white;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 900;
+      letter-spacing: 0.4px;
+      margin-bottom: 10px;
+      box-shadow: 0 3px 0 #0764ad;
+    }
+
+    .hero-title {
+      font-size: 1.85rem;
+      font-weight: 900;
+      color: #0984E3;
+      line-height: 1.25;
+      margin-bottom: 8px;
+    }
+
+    .hero-subtitle {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #636E72;
+      line-height: 1.5;
+    }
+
+    .hero-graphic {
+      width: 105px;
+      height: 105px;
+      background: radial-gradient(circle, #E1F0FF 60%, #CCE5FF 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 6px 15px rgba(9, 132, 227, 0.15);
+      position: relative;
+    }
+
+    .hero-graphic svg {
+      width: 70px;
+      height: 70px;
+    }
+
+    /* Khung nhắc nhở bắt buộc */
+    .warning-box {
+      background: linear-gradient(135deg, #FFF9E6, #FFF0C2);
+      border: 3px solid #FDCB6E;
+      border-radius: 22px;
+      padding: 18px 22px;
+      margin-bottom: 24px;
+      box-shadow: 0 8px 20px rgba(253, 203, 110, 0.35);
+      position: relative;
+    }
+
+    .warning-title {
+      font-size: 1.08rem;
+      font-weight: 900;
+      color: #D35400;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .warning-text {
+      font-size: 0.98rem;
+      line-height: 1.6;
+      font-weight: 700;
+      color: #7A4100;
+    }
+
+    .warning-tag {
+      display: inline-block;
+      margin-top: 8px;
+      background: #E17055;
+      color: white;
+      padding: 3px 12px;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 0.85rem;
+    }
+
+    /* Tiêu đề từng phần bài */
+    .exercise-divider {
+      background: linear-gradient(135deg, #6C5CE7, #8854C0);
+      color: white;
+      padding: 12px 20px;
+      border-radius: 18px;
+      margin: 28px 0 16px;
+      font-size: 1.05rem;
+      font-weight: 900;
+      box-shadow: 0 6px 0 #4834D4;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* Thẻ câu hỏi */
+    .question-card {
+      background: var(--card-bg);
+      border-radius: 26px;
+      padding: 22px 22px;
+      margin-bottom: 24px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+      border: 3px solid #FFFFFF;
+      transition: transform 0.2s ease;
+      position: relative;
+    }
+
+    .question-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .question-num {
+      background: linear-gradient(135deg, #6c5ce7, #8854C0);
+      color: white;
+      font-size: 0.95rem;
+      font-weight: 900;
+      padding: 5px 16px;
+      border-radius: 14px;
+      box-shadow: 0 3px 0 #4834d4;
+    }
+
+    .question-type-badge {
+      font-size: 0.82rem;
+      font-weight: 800;
+      padding: 4px 14px;
+      border-radius: 12px;
+      background: #E8F8F5;
+      color: #00A884;
+      border: 1.5px solid #00C9A7;
+    }
+
+    .question-content {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #2D3436;
+      line-height: 1.6;
+      margin-bottom: 18px;
+    }
+
+    /* Hộp thông báo trong đề thi */
+    .announcement-box {
+      background: #FFFFFF;
+      border: 2.5px solid #2D3436;
+      border-radius: 18px;
+      padding: 18px 22px;
+      margin-bottom: 20px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+    }
+
+    .announcement-header {
+      text-align: center;
+      font-weight: 900;
+      font-size: 1.1rem;
+      color: #2D3436;
+      margin-bottom: 12px;
+      border-bottom: 2px dashed #E2E8F0;
+      padding-bottom: 8px;
+    }
+
+    /* Đoạn văn đọc hiểu */
+    .passage-box {
+      background: #F8F9FE;
+      border: 2px solid #E2E8F0;
+      border-radius: 20px;
+      padding: 18px 22px;
+      margin-bottom: 22px;
+      font-size: 1.05rem;
+      line-height: 1.7;
+      color: #2D3436;
+      font-weight: 600;
+    }
+
+    /* Gạch chân âm phát âm */
+    .phonetic-u, u {
+      color: #D63031 !important;
+      text-decoration: underline !important;
+      text-decoration-thickness: 3px !important;
+      text-underline-offset: 4px !important;
+      font-weight: 900;
+    }
+
+    /* Nút đáp án 3D */
+    .options-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    @media (min-width: 600px) {
+      .options-grid.two-cols {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .option-btn {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      background: #FFFFFF;
+      border: 2.5px solid #E2E8F0;
+      border-radius: 18px;
+      padding: 12px 18px;
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: #2D3436;
+      cursor: pointer;
+      text-align: left;
+      transition: transform 0.15s ease, background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.15s ease;
+      box-shadow: 0 5px 0 #CBD5E1;
+      position: relative;
+      outline: none;
+    }
+
+    .option-btn:hover:not(:disabled) {
+      transform: translateY(-2px) scale(1.02);
+      border-color: #A29BFE;
+      box-shadow: 0 7px 0 #a29bfe;
+      background: #FDFBFF;
+    }
+
+    .option-btn:active:not(:disabled) {
+      transform: translateY(3px);
+      box-shadow: 0 2px 0 #CBD5E1;
+    }
+
+    .option-key {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      min-width: 32px;
+      background: #F1F2F6;
+      color: #6C5CE7;
+      border-radius: 10px;
+      margin-right: 12px;
+      font-weight: 900;
+      font-size: 0.95rem;
+      border: 1.5px solid #DFE4EA;
+    }
+
+    .option-btn.correct {
+      background: #E8FBF0 !important;
+      border-color: var(--correct-green) !important;
+      color: #056636 !important;
+      box-shadow: 0 5px 0 var(--correct-green-shadow) !important;
+    }
+
+    .option-btn.correct .option-key {
+      background: var(--correct-green);
+      color: white;
+      border-color: var(--correct-green-shadow);
+    }
+
+    .option-btn.wrong {
+      background: #FFF0F2 !important;
+      border-color: var(--wrong-red) !important;
+      color: #A31221 !important;
+      box-shadow: 0 5px 0 var(--wrong-red-shadow) !important;
+      animation: shake 0.45s ease-in-out;
+    }
+
+    .option-btn.wrong .option-key {
+      background: var(--wrong-red);
+      color: white;
+      border-color: var(--wrong-red-shadow);
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-8px); }
+      40%, 80% { transform: translateX(8px); }
+    }
+
+    /* Khung giải thích siêu chi tiết (Chuẩn ảnh 1) */
+    .explanation-box {
+      margin-top: 20px;
+      background: #FFFFFF;
+      border: 2px dashed #A29BFE;
+      border-radius: 22px;
+      padding: 18px 20px;
+      animation: slideDown 0.35s ease-out;
+      box-shadow: 0 8px 24px rgba(108, 92, 231, 0.08);
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .exp-title {
+      font-size: 1.15rem;
+      font-weight: 900;
+      color: #E65100;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 12px;
+      letter-spacing: 0.5px;
+    }
+
+    .exp-translation-bubble {
+      background: #FFF9E6;
+      border-left: 5px solid #FDCB6E;
+      border-radius: 14px;
+      padding: 10px 14px;
+      font-size: 0.96rem;
+      font-weight: 700;
+      color: #2D3436;
+      line-height: 1.5;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .exp-translation-bubble .icon {
+      font-size: 1.25rem;
+    }
+
+    .exp-section-title {
+      font-size: 0.98rem;
+      font-weight: 900;
+      color: #2D3436;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .analysis-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    @media (min-width: 620px) {
+      .analysis-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .analysis-card {
+      background: #FFFFFF;
+      border: 1.8px solid #E2E8F0;
+      border-radius: 16px;
+      padding: 10px 14px;
+      font-size: 0.92rem;
+      line-height: 1.5;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+    }
+
+    .analysis-word {
+      font-weight: 900;
+      font-size: 1rem;
+      color: #0984E3;
+      margin-right: 4px;
+    }
+
+    .analysis-word.green {
+      color: #00B894;
+    }
+
+    .badge-pill {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 8px;
+      font-size: 0.76rem;
+      font-weight: 800;
+      margin: 0 4px;
+      vertical-align: middle;
+    }
+
+    .badge-wrong {
+      background: #FEE2E2;
+      color: #DC2626;
+      border: 1px solid #FCA5A5;
+    }
+
+    .badge-structure {
+      background: #EDE9FE;
+      color: #6D28D9;
+      border: 1px solid #DDD6FE;
+    }
+
+    .badge-correct {
+      background: #D1FAE5;
+      color: #059669;
+      border: 1px solid #A7F3D0;
+    }
+
+    .analysis-meaning {
+      font-weight: 700;
+      color: #7A4100;
+    }
+
+    .exp-rule-row {
+      margin-bottom: 12px;
+      font-size: 0.96rem;
+      line-height: 1.6;
+      color: #2D3436;
+      font-weight: 600;
+    }
+
+    .exp-rule-row .check-label {
+      font-weight: 900;
+      color: #00A884;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-right: 6px;
+    }
+
+    .exp-rule-pill {
+      background: #FFF3CD;
+      color: #856404;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 10px;
+      margin: 0 4px;
+      display: inline-block;
+    }
+
+    .exp-highlight-green {
+      background: #E8F8F5;
+      color: #00A884;
+      font-weight: 900;
+      padding: 2px 8px;
+      border-radius: 8px;
+      display: inline-block;
+      margin: 0 2px;
+    }
+
+    .exp-wrong-row {
+      font-size: 0.96rem;
+      line-height: 1.6;
+      color: #2D3436;
+      font-weight: 600;
+    }
+
+    .exp-wrong-row .cross-label {
+      font-weight: 900;
+      color: #D63031;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-right: 6px;
+    }
+
+    .exp-wrong-tag {
+      background: #FFEAEA;
+      color: #D63031;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 8px;
+      display: inline-block;
+      margin: 0 3px;
+    }
+
+    /* Submit Section */
+    .submit-section {
+      text-align: center;
+      margin-top: 36px;
+      margin-bottom: 50px;
+    }
+
+    .submit-btn {
+      background: linear-gradient(135deg, #00C9A7, #00B894);
+      color: white;
+      font-size: 1.25rem;
+      font-weight: 900;
+      padding: 16px 48px;
+      border: none;
+      border-radius: 999px;
+      box-shadow: 0 8px 0 #008770, 0 15px 25px rgba(0, 201, 167, 0.4);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      letter-spacing: 0.5px;
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-3px) scale(1.03);
+      box-shadow: 0 11px 0 #008770, 0 18px 30px rgba(0, 201, 167, 0.5);
+    }
+
+    .submit-btn:active {
+      transform: translateY(4px);
+      box-shadow: 0 4px 0 #008770;
+    }
+
+    /* Result Modal */
+    .result-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.65);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      padding: 16px;
+      backdrop-filter: blur(5px);
+    }
+
+    .result-card {
+      background: white;
+      border-radius: 30px;
+      padding: 32px 26px;
+      max-width: 500px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+      position: relative;
+      animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes popIn {
+      from { transform: scale(0.85); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .result-emoji {
+      font-size: 3.5rem;
+      margin-bottom: 10px;
+      animation: bounce 1.5s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .result-score {
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: #6C5CE7;
+      margin-bottom: 12px;
+    }
+
+    .result-feedback {
+      background: #F8F9FE;
+      border-radius: 18px;
+      padding: 16px;
+      font-size: 1.05rem;
+      line-height: 1.6;
+      font-weight: 700;
+      color: #2D3436;
+      margin-bottom: 24px;
+      border: 2px dashed #A29BFE;
+    }
+
+    .retry-btn {
+      background: linear-gradient(135deg, #FDCB6E, #E17055);
+      color: white;
+      font-size: 1.1rem;
+      font-weight: 900;
+      padding: 12px 36px;
+      border: none;
+      border-radius: 999px;
+      box-shadow: 0 6px 0 #D35400;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .retry-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 0 #D35400;
+    }
+
+    .retry-btn:active {
+      transform: translateY(3px);
+      box-shadow: 0 3px 0 #D35400;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background Sky & City -->
+  <div class="sky-decorations">
+    <div class="sun-glow"></div>
+    <svg class="floating-cloud cloud-1" viewBox="0 0 100 60"><path d="M20,40 Q10,40 10,30 Q10,20 25,20 Q30,10 45,10 Q60,10 65,20 Q80,20 80,30 Q90,30 90,40 Q90,50 80,50 L20,50 Z"/></svg>
+    <svg class="floating-cloud cloud-2" viewBox="0 0 100 60"><path d="M20,40 Q10,40 10,30 Q10,20 25,20 Q30,10 45,10 Q60,10 65,20 Q80,20 80,30 Q90,30 90,40 Q90,50 80,50 L20,50 Z"/></svg>
+  </div>
+  <div class="city-backdrop"></div>
+  <div class="bottom-road">
+    <div class="road-curb"></div>
+    <div class="road-line"></div><div class="road-line"></div><div class="road-line"></div><div class="road-line"></div><div class="road-line"></div><div class="road-line"></div><div class="road-line"></div>
+  </div>
+
+  <div class="container">
+
+    <!-- Top Sticky Bar -->
+    <div class="top-sticky-bar">
+      <div class="progress-row">
+        <div class="star-score-pill">
+          <span>⭐</span> <span id="star-score-text">0 / 40</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" id="progress-bar-fill"></div>
+        </div>
+        <div class="progress-count-pill" id="progress-ratio-text">0 / 40</div>
+      </div>
+      <div class="teacher-contact-pill">
+        <div class="teacher-badge">
+          <span>👩‍🏫</span> Giáo viên tạo: <strong>Ms Lê Hằng English</strong>
+        </div>
+        <div>
+          <span>Chuyên luyện thi HSG & Ôn thi vào lớp 10 chất lượng cao</span> • <span class="phone-tag">☎️ 0936.322.809</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hero Card Banner -->
+    <div class="unit-hero-card">
+      <div class="hero-content">
+        <div class="unit-badge">🚆 TEST 2 · TIME LIMITED: 45 MINUTES</div>
+        <h1 class="hero-title">Green Living & Environment</h1>
+        <div class="hero-subtitle">Phát âm & Trọng âm | Ngữ pháp & Giới từ | Sắp xếp đoạn văn & Thư | Đọc hiểu & Điền từ | Tự luận viết câu hoàn chỉnh</div>
+      </div>
+      <div class="hero-graphic">
+        <svg viewBox="0 0 100 100">
+          <rect x="25" y="20" width="30" height="70" rx="4" fill="#0984E3"/>
+          <polygon points="25,20 40,5 55,20" fill="#0984E3"/>
+          <rect x="60" y="45" width="25" height="45" rx="3" fill="#74B9FF"/>
+          <circle cx="33" cy="32" r="3" fill="#FFF"/><circle cx="47" cy="32" r="3" fill="#FFF"/>
+          <circle cx="33" cy="46" r="3" fill="#FFF"/><circle cx="47" cy="46" r="3" fill="#FFF"/>
+          <circle cx="33" cy="60" r="3" fill="#FFF"/><circle cx="47" cy="60" r="3" fill="#FFF"/>
+          <circle cx="33" cy="74" r="3" fill="#FFF"/><circle cx="47" cy="74" r="3" fill="#FFF"/>
+          <circle cx="68" cy="56" r="2.5" fill="#FFF"/><circle cx="77" cy="56" r="2.5" fill="#FFF"/>
+          <circle cx="68" cy="68" r="2.5" fill="#FFF"/><circle cx="77" cy="68" r="2.5" fill="#FFF"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Khung thông báo bắt buộc -->
+    <div class="warning-box">
+      <div class="warning-title">⚠️ LỜI NHẮC CỰC KỲ QUAN TRỌNG ⚠️</div>
+      <div class="warning-text">
+        Chỉ có đọc kỹ giải thích ngay sau mỗi câu, sau đó ghi lại từ vựng/cấu trúc mới vào vở để học thì mới thực sự giỏi lên.<br>
+        Làm cho xong mà không đọc giải thích hay đọc qua loa không ghi chép thì chỉ tốn thời gian vô ích!
+      </div>
+      <div class="warning-tag">Kéo tới đâu, làm tới đó! *</div>
+    </div>
+
+    <!-- Nơi hiển thị các câu hỏi -->
+    <div id="quiz-container"></div>
+
+    <!-- Nút Nộp Bài -->
+    <div class="submit-section">
+      <button class="submit-btn" onclick="submitQuiz()">🎉 NỘP BÀI KIỂM TRA</button>
+    </div>
+
+  </div>
+
+  <!-- Popup kết quả -->
+  <div id="result-modal" class="result-modal">
+    <div class="result-card">
+      <div id="result-emoji" class="result-emoji">🌟</div>
+      <div id="result-score" class="result-score">0 / 40</div>
+      <div id="result-feedback" class="result-feedback"></div>
+      <button class="retry-btn" onclick="retryQuiz()">🔄 Làm lại bài</button>
+    </div>
+  </div>
+
+  <script>
+    // TOÀN BỘ 40 CÂU HỎI TRONG ĐỀ TEST 2 (28 CÂU PHẦN I + 12 CÂU TỰ LUẬN PHẦN II)
+    const quizData = [
+      // I. TRẮC NGHIỆM (Câu 1 - 28)
+      {
+        id: 1,
+        exTitle: "I. TRẮC NGHIỆM - Find the word which has a different sound in the part underlined.",
+        question: "Question 1: Find the word which has a different sound in the part underlined.",
+        options: [
+          { key: "A", text: "announ<u>ced</u>", raw: "announced" },
+          { key: "B", text: "evaluat<u>ed</u>", raw: "evaluated" },
+          { key: "C", text: "enunciat<u>ed</u>", raw: "enunciated" },
+          { key: "D", text: "demand<u>ed</u>", raw: "demanded" }
+        ],
+        correct: "A",
+        explanation: {
+          translation: "Tìm từ có phần gạch chân phát âm khác với các từ còn lại.",
+          cards: [
+            { word: "announced", isCorrect: true, badgeText: "/t/", badgeType: "badge-correct", meaning: "= được thông báo (/əˈnaʊnst/)" },
+            { word: "evaluated", isCorrect: false, badgeText: "/ɪd/", badgeType: "badge-structure", meaning: "= được đánh giá (/ɪˈvæl.ju.eɪ.tɪd/)" },
+            { word: "enunciated", isCorrect: false, badgeText: "/ɪd/", badgeType: "badge-structure", meaning: "= được phát âm rõ ràng (/ɪˈnʌn.si.eɪ.tɪd/)" },
+            { word: "demanded", isCorrect: false, badgeText: "/ɪd/", badgeType: "badge-structure", meaning: "= được yêu cầu (/dɪˈmɑːn.dɪd/)" }
+          ],
+          whyCorrect: { ruleTitle: "Quy tắc phát âm đuôi -ed", detail: "Đuôi '-ed' đi sau âm vô thanh /s/ (của announce) được phát âm là <span class='exp-highlight-green'>/t/</span>. Ở 3 từ còn lại, từ kết thúc bằng âm /t/ hoặc /d/ nên đuôi '-ed' phát âm là <span class='exp-highlight-green'>/ɪd/</span>." },
+          whyWrong: [
+            { word: "evaluated", reason: "tận cùng là âm /t/ nên đuôi -ed đọc là /ɪd/." },
+            { word: "enunciated", reason: "tận cùng là âm /t/ nên đuôi -ed đọc là /ɪd/." },
+            { word: "demanded", reason: "tận cùng là âm /d/ nên đuôi -ed đọc là /ɪd/." }
+          ]
+        }
+      },
+      {
+        id: 2,
+        exTitle: "I. TRẮC NGHIỆM - Find the word which has a different sound in the part underlined.",
+        question: "Question 2: Find the word which has a different sound in the part underlined.",
+        options: [
+          { key: "A", text: "l<u>i</u>tter", raw: "litter" },
+          { key: "B", text: "<u>i</u>ssue", raw: "issue" },
+          { key: "C", text: "dev<u>i</u>ce", raw: "device" },
+          { key: "D", text: "p<u>i</u>ck", raw: "pick" }
+        ],
+        correct: "C",
+        explanation: {
+          translation: "Tìm từ có phần gạch chân phát âm khác với các từ còn lại.",
+          cards: [
+            { word: "litter", isCorrect: false, badgeText: "/ɪ/", badgeType: "badge-structure", meaning: "= rác xả bừa bãi (/ˈlɪt.ər/)" },
+            { word: "issue", isCorrect: false, badgeText: "/ɪ/", badgeType: "badge-structure", meaning: "= vấn đề, phát hành (/ˈɪʃ.uː/)" },
+            { word: "device", isCorrect: true, badgeText: "/aɪ/", badgeType: "badge-correct", meaning: "= thiết bị, dụng cụ (/dɪˈvaɪs/)" },
+            { word: "pick", isCorrect: false, badgeText: "/ɪ/", badgeType: "badge-structure", meaning: "= nhặt, hái (/pɪk/)" }
+          ],
+          whyCorrect: { ruleTitle: "Phát âm chữ cái 'i'", detail: "Trong từ <span class='exp-highlight-green'>device</span>, chữ 'i' được phát âm là nguyên âm đôi <span class='exp-highlight-green'>/aɪ/</span>. Ba từ còn lại phát âm là nguyên âm ngắn /ɪ/." },
+          whyWrong: [
+            { word: "litter", reason: "chữ 'i' phát âm là /ɪ/ ngắn." },
+            { word: "issue", reason: "chữ 'i' phát âm là /ɪ/ ngắn." },
+            { word: "pick", reason: "chữ 'i' phát âm là /ɪ/ ngắn." }
+          ]
+        }
+      },
+      {
+        id: 3,
+        exTitle: "I. TRẮC NGHIỆM - Mark the letter A, B, C or D to indicate the correct answer to each of the following questions.",
+        question: "Question 3: In the UK, poor air quality is responsible ________ some 40,000 deaths each year.",
+        options: [
+          { key: "A", text: "to", raw: "to" },
+          { key: "B", text: "for", raw: "for" },
+          { key: "C", text: "in", raw: "in" },
+          { key: "D", text: "with", raw: "with" }
+        ],
+        correct: "B",
+        explanation: {
+          translation: "Tại Vương quốc Anh, chất lượng không khí kém là nguyên nhân gây ra khoảng 40.000 ca tử vong mỗi năm.",
+          cards: [
+            { word: "to", isCorrect: false, badgeText: "sai giới từ", badgeType: "badge-wrong", meaning: "= không đi với responsible" },
+            { word: "for", isCorrect: true, badgeText: "chuẩn cấu trúc", badgeType: "badge-correct", meaning: "= be responsible for (chịu trách nhiệm / là nguyên nhân)" },
+            { word: "in", isCorrect: false, badgeText: "sai giới từ", badgeType: "badge-wrong", meaning: "= không đi với responsible" },
+            { word: "with", isCorrect: false, badgeText: "sai giới từ", badgeType: "badge-wrong", meaning: "= không đi với responsible" }
+          ],
+          whyCorrect: { ruleTitle: "Cấu trúc giới từ với Responsible", detail: "Cụm tính từ cố định: <span class='exp-highlight-green'>be responsible for sth/doing sth</span> (chịu trách nhiệm về điều gì / là nguyên nhân dẫn đến điều gì)." },
+          whyWrong: [
+            { word: "to", reason: "responsible không đi với giới từ to." },
+            { word: "in", reason: "responsible không đi với giới từ in." },
+            { word: "with", reason: "responsible không đi với giới từ with." }
+          ]
+        }
+      },
+      {
+        id: 4,
+        exTitle: "I. TRẮC NGHIỆM - Mark the letter A, B, C or D to indicate the correct answer to each of the following questions.",
+        question: "Question 4: Using energy-efficient ________ appliances can help protect the environment and save money.",
+        options: [
+          { key: "A", text: "electricity", raw: "electricity" },
+          { key: "B", text: "electric", raw: "electric" },
+          { key: "C", text: "electrify", raw: "electrify" },
+          { key: "D", text: "electrical", raw: "electrical" }
+        ],
+        correct: "D",
+        explanation: {
+          translation: "Việc sử dụng các thiết bị điện tiết kiệm năng lượng có thể giúp bảo vệ môi trường và tiết kiệm tiền bạc.",
+          cards: [
+            { word: "electricity", isCorrect: false, badgeText: "danh từ", badgeType: "badge-wrong", meaning: "= điện lực, dòng điện" },
+            { word: "electric", isCorrect: false, badgeText: "tính từ", badgeType: "badge-wrong", meaning: "= chạy bằng điện (electric car, electric guitar)" },
+            { word: "electrify", isCorrect: false, badgeText: "động từ", badgeType: "badge-wrong", meaning: "= điện khí hóa" },
+            { word: "electrical", isCorrect: true, badgeText: "tính từ", badgeType: "badge-correct", meaning: "= thuộc về điện / đồ điện gia dụng (electrical appliances)" }
+          ],
+          whyCorrect: { ruleTitle: "Phân biệt Electric và Electrical", detail: "Cụm danh từ cố định chỉ đồ điện gia đình: <span class='exp-highlight-green'>electrical appliances</span> (thiết bị điện gia dụng nói chung). 'Electric' thường đi với đồ vật cụ thể chạy bằng điện như electric car, electric cooker." },
+          whyWrong: [
+            { word: "electricity", reason: "danh từ không dùng bổ nghĩa đứng trước danh từ appliances." },
+            { word: "electric", reason: "không kết hợp tự nhiên với danh từ appliances." },
+            { word: "electrify", reason: "đây là động từ." }
+          ]
+        }
+      },
+      {
+        id: 5,
+        exTitle: "I. TRẮC NGHIỆM - Mark the letter A, B, C or D to indicate the correct answer to each of the following questions.",
+        question: "Question 5: Recycling should ________ by everyone to reduce the impact on the environment.",
+        options: [
+          { key: "A", text: "be practised", raw: "be practised" },
+          { key: "B", text: "practise", raw: "practise" },
+          { key: "C", text: "attract", raw: "attract" },
+          { key: "D", text: "be attracted", raw: "be attracted" }
+        ],
+        correct: "A",
+        explanation: {
+          translation: "Việc tái chế nên được thực hiện bởi tất cả mọi người để giảm thiểu tác động đến môi trường.",
+          cards: [
+            { word: "be practised", isCorrect: true, badgeText: "bị động chuẩn", badgeType: "badge-correct", meaning: "= nên được thực hành/thực hiện" },
+            { word: "practise", isCorrect: false, badgeText: "chủ động", badgeType: "badge-wrong", meaning: "= tự thực hành (Recycling là vật, không tự làm)" },
+            { word: "attract", isCorrect: false, badgeText: "sai nghĩa", badgeType: "badge-wrong", meaning: "= thu hút (chủ động)" },
+            { word: "be attracted", isCorrect: false, badgeText: "sai nghĩa", badgeType: "badge-wrong", meaning: "= bị thu hút" }
+          ],
+          whyCorrect: { ruleTitle: "Thể bị động với Động từ khuyết thiếu (Modal Verbs)", detail: "Chủ ngữ 'Recycling' (việc tái chế) là danh từ chỉ sự vật và có 'by everyone' phía sau → Cần dùng bị động: <span class='exp-highlight-green'>Modal + be + V3/ed</span> → <span class='exp-highlight-green'>should be practised</span>." },
+          whyWrong: [
+            { word: "practise", reason: "dạng chủ động, sai ngữ pháp." },
+            { word: "attract", reason: "nghĩa là thu hút, không phù hợp ngữ cảnh." },
+            { word: "be attracted", reason: "tái chế không 'bị thu hút bởi mọi người'." }
+          ]
+        }
+      },
+      {
+        id: 6,
+        exTitle: "I. TRẮC NGHIỆM - Mark the letter A, B, C or D to indicate the correct answer to each of the following questions.",
+        question: "Question 6: I think I ________ my paper and cardboard to help save trees.",
+        options: [
+          { key: "A", text: "recycle", raw: "recycle" },
+          { key: "B", text: "am going to recycle", raw: "am going to recycle" },
+          { key: "C", text: "will recycle", raw: "will recycle" },
+          { key: "D", text: "am recycling", raw: "am recycling" }
+        ],
+        correct: "C",
+        explanation: {
+          translation: "Tôi nghĩ tôi sẽ tái chế giấy và bìa các-tông của mình để giúp cứu lấy cây xanh.",
+          cards: [
+            { word: "recycle", isCorrect: false, badgeText: "hiện tại đơn", badgeType: "badge-structure", meaning: "= thói quen lặp đi lặp lại" },
+            { word: "am going to recycle", isCorrect: false, badgeText: "dự định trước", badgeType: "badge-structure", meaning: "= dự định từ trước lúc nói" },
+            { word: "will recycle", isCorrect: true, badgeText: "tương lai đơn", badgeType: "badge-correct", meaning: "= quyết định tại thời điểm nói sau 'I think'" },
+            { word: "am recycling", isCorrect: false, badgeText: "hiện tại tiếp diễn", badgeType: "badge-structure", meaning: "= đang diễn ra lúc nói" }
+          ],
+          whyCorrect: { ruleTitle: "Thì Tương lai đơn với động từ biểu đạt ý kiến", detail: "Sau các cụm từ thể hiện quan điểm/quyết định vừa nảy ra như <span class='exp-highlight-green'>'I think', 'I believe', 'probably'</span>, ta sử dụng thì Tương lai đơn: <span class='exp-highlight-green'>will + V-bare</span>." },
+          whyWrong: [
+            { word: "recycle", reason: "hiện tại đơn không diễn tả quyết định hướng tới tương lai sau 'I think'." },
+            { word: "am going to recycle", reason: "dùng cho kế hoạch đã được chuẩn bị từ trước." },
+            { word: "am recycling", reason: "diễn tả hành động đang diễn ra tại chỗ." }
+          ]
+        }
+      },
+      {
+        id: 7,
+        exTitle: "I. TRẮC NGHIỆM - Mark the letter A, B, C or D to indicate the correct answer to each of the following questions.",
+        question: "Question 7: More people ________ a green lifestyle because it is good for the environment.",
+        options: [
+          { key: "A", text: "adopt", raw: "adopt" },
+          { key: "B", text: "conclude", raw: "conclude" },
+          { key: "C", text: "compose", raw: "compose" },
+          { key: "D", text: "create", raw: "create" }
+        ],
+        correct: "A",
+        explanation: {
+          translation: "Ngày càng có nhiều người lựa chọn lối sống xanh vì điều đó tốt cho môi trường.",
+          cards: [
+            { word: "adopt", isCorrect: true, badgeText: "collocation chuẩn", badgeType: "badge-correct", meaning: "= áp dụng, tiếp nhận (adopt a green lifestyle)" },
+            { word: "conclude", isCorrect: false, badgeText: "động từ", badgeType: "badge-structure", meaning: "= kết luận, bế mạc" },
+            { word: "compose", isCorrect: false, badgeText: "động từ", badgeType: "badge-structure", meaning: "= sáng tác nhạc, cấu thành" },
+            { word: "create", isCorrect: false, badgeText: "động từ", badgeType: "badge-structure", meaning: "= tạo ra, sáng tạo" }
+          ],
+          whyCorrect: { ruleTitle: "Cụm từ cố định với Lifestyle", detail: "Cụm từ chuẩn xác trong tiếng Anh: <span class='exp-highlight-green'>adopt a lifestyle / adopt green habits</span> (bắt đầu áp dụng theo một lối sống mới)." },
+          whyWrong: [
+            { word: "conclude", reason: "mang nghĩa kết luận một buổi họp/bài văn." },
+            { word: "compose", reason: "mang nghĩa sáng tác thơ ca, âm nhạc." },
+            { word: "create", reason: "không dùng 'create a lifestyle' trong ngữ cảnh này." }
+          ]
+        }
+      },
+      {
+        id: 8,
+        exTitle: "I. TRẮC NGHIỆM - Mark the letter A, B, C or D to indicate the correct answer to each of the following questions.",
+        question: "Question 8: Household appliances should be ________ to save energy and avoid dangerous situations.",
+        options: [
+          { key: "A", text: "turned off", raw: "turned off" },
+          { key: "B", text: "turned on", raw: "turned on" },
+          { key: "C", text: "turned up", raw: "turned up" },
+          { key: "D", text: "turned down", raw: "turned down" }
+        ],
+        correct: "A",
+        explanation: {
+          translation: "Các thiết bị gia dụng nên được tắt đi để tiết kiệm năng lượng và tránh các tình huống nguy hiểm.",
+          cards: [
+            { word: "turned off", isCorrect: true, badgeText: "phrasal verb chuẩn", badgeType: "badge-correct", meaning: "= tắt đi (để tiết kiệm điện)" },
+            { word: "turned on", isCorrect: false, badgeText: "ngược nghĩa", badgeType: "badge-wrong", meaning: "= bật lên (gây lãng phí điện)" },
+            { word: "turned up", isCorrect: false, badgeText: "phrasal verb", badgeType: "badge-structure", meaning: "= vặn to âm lượng / xuất hiện" },
+            { word: "turned down", isCorrect: false, badgeText: "phrasal verb", badgeType: "badge-structure", meaning: "= vặn nhỏ / từ chối" }
+          ],
+          whyCorrect: { ruleTitle: "Cụm động từ chỉ tắt thiết bị điện", detail: "Để 'save energy' (tiết kiệm điện) và tránh nguy hiểm cháy nổ, thiết bị phải được <span class='exp-highlight-green'>turned off</span> (tắt nguồn hoàn toàn)." },
+          whyWrong: [
+            { word: "turned on", reason: "bật thiết bị thì làm sao tiết kiệm điện được." },
+            { word: "turned up", reason: "tăng công suất/âm lượng." },
+            { word: "turned down", reason: "giảm âm lượng hoặc từ chối." }
+          ]
+        }
+      },
+
+      // BÀI ĐỌC THÔNG BÁO TÁI CHẾ THỦY TINH (Câu 9 - 11)
+      {
+        id: 9,
+        exTitle: "I. TRẮC NGHIỆM - Read the following announcement and mark the letter A, B, C, or D to indicate the correct option that best fits each of the numbered blanks.",
+        question: "<div class='announcement-box'><div class='announcement-header'>♻️ Help Reduce Your Carbon Footprint! Recycle now! ♻️</div><p><b>WHY?</b><br>• Recycling glass reduces (9) ________ waste.<br>• Reusing glass means less landfill waste.<br><b>HOW?</b><br>• Bring your glass bottles and jars (10) ________ our recycling center.<br>• Clean up your glass items before dropping them off.<br>• Get rewarded! Earn (11) ________ small money reward for every kilogram of glass recycle.<br><br><i>Let's work together for a greener future!</i></p></div>Question 9: Recycling glass reduces (9) ________ waste.",
+        options: [
+          { key: "A", text: "house", raw: "house" },
+          { key: "B", text: "household", raw: "household" },
+          { key: "C", text: "housing", raw: "housing" },
+          { key: "D", text: "home", raw: "home" }
+        ],
+        correct: "B",
+        explanation: {
+          translation: "Tái chế thủy tinh giúp làm giảm lượng rác thải sinh hoạt gia đình.",
+          cards: [
+            { word: "house", isCorrect: false, badgeText: "danh từ", badgeType: "badge-wrong", meaning: "= ngôi nhà (công trình xây dựng)" },
+            { word: "household", isCorrect: true, badgeText: "danh từ ghép", badgeType: "badge-correct", meaning: "= hộ gia đình (household waste: rác sinh hoạt)" },
+            { word: "housing", isCorrect: false, badgeText: "danh từ", badgeType: "badge-wrong", meaning: "= vấn đề nhà ở" },
+            { word: "home", isCorrect: false, badgeText: "danh từ", badgeType: "badge-wrong", meaning: "= mái ấm gia đình" }
+          ],
+          whyCorrect: { ruleTitle: "Thuật ngữ Rác thải sinh hoạt", detail: "Cụm danh từ cố định trong chủ đề môi trường: <span class='exp-highlight-green'>household waste</span> (chất thải sinh hoạt của hộ gia đình)." },
+          whyWrong: [
+            { word: "house", reason: "không dùng 'house waste'." },
+            { word: "housing", reason: "chỉ ngành nhà ở, dự án quy hoạch." },
+            { word: "home", reason: "chỉ tổ ấm tinh thần." }
+          ]
+        }
+      },
+      {
+        id: 10,
+        exTitle: "I. TRẮC NGHIỆM - Read the following announcement and mark the letter A, B, C, or D to indicate the correct option that best fits each of the numbered blanks.",
+        question: "Question 10: Bring your glass bottles and jars (10) ________ our recycling center.",
+        options: [
+          { key: "A", text: "in", raw: "in" },
+          { key: "B", text: "at", raw: "at" },
+          { key: "C", text: "for", raw: "for" },
+          { key: "D", text: "to", raw: "to" }
+        ],
+        correct: "D",
+        explanation: {
+          translation: "Hãy mang chai lọ thủy tinh của bạn đến trung tâm tái chế của chúng tôi.",
+          cards: [
+            { word: "in", isCorrect: false, badgeText: "sai giới từ", badgeType: "badge-wrong", meaning: "= ở trong" },
+            { word: "at", isCorrect: false, badgeText: "sai giới từ", badgeType: "badge-wrong", meaning: "= tại địa điểm" },
+            { word: "for", isCorrect: false, badgeText: "sai giới từ", badgeType: "badge-wrong", meaning: "= dành cho" },
+            { word: "to", isCorrect: true, badgeText: "chỉ phương hướng", badgeType: "badge-correct", meaning: "= đến nơi nào (bring sth to somewhere)" }
+          ],
+          whyCorrect: { ruleTitle: "Cấu trúc Bring sth to somewhere", detail: "Động từ 'bring' (mang theo/đem tới) đi với giới từ chỉ hướng chuyển động là <span class='exp-highlight-green'>to</span>: <span class='exp-highlight-green'>Bring sth to our recycling center</span>." },
+          whyWrong: [
+            { word: "in", reason: "in không dùng để chỉ đích đến sau động từ chuyển dịch bring." },
+            { word: "at", reason: "at chỉ vị trí tĩnh tại một điểm." },
+            { word: "for", reason: "for chỉ mục đích, không chỉ nơi mang đến." }
+          ]
+        }
+      },
+      {
+        id: 11,
+        exTitle: "I. TRẮC NGHIỆM - Read the following announcement and mark the letter A, B, C, or D to indicate the correct option that best fits each of the numbered blanks.",
+        question: "Question 11: Get rewarded! Earn (11) ________ small money reward for every kilogram of glass recycle.",
+        options: [
+          { key: "A", text: "the", raw: "the" },
+          { key: "B", text: "an", raw: "an" },
+          { key: "C", text: "a", raw: "a" },
+          { key: "D", text: "no article", raw: "no article" }
+        ],
+        correct: "C",
+        explanation: {
+          translation: "Nhận phần thưởng! Nhận một khoản tiền thưởng nhỏ cho mỗi ki-lô-gam thủy tinh được tái chế.",
+          cards: [
+            { word: "the", isCorrect: false, badgeText: "mạo từ xác định", badgeType: "badge-wrong", meaning: "= phần thưởng chưa được xác định cụ thể trước đó" },
+            { word: "an", isCorrect: false, badgeText: "sai quy tắc âm", badgeType: "badge-wrong", meaning: "= 'small' bắt đầu bằng phụ âm /s/" },
+            { word: "a", isCorrect: true, badgeText: "mạo từ không xác định", badgeType: "badge-correct", meaning: "= a small money reward (một phần thưởng tiền mặt nhỏ)" },
+            { word: "no article", isCorrect: false, badgeText: "thiếu mạo từ", badgeType: "badge-wrong", meaning: "= danh từ đếm được số ít 'reward' bắt buộc có mạo từ" }
+          ],
+          whyCorrect: { ruleTitle: "Mạo từ không xác định với danh từ đếm được số ít", detail: "Danh từ chính là <span class='exp-highlight-green'>reward</span> (phần thưởng - danh từ đếm được số ít), phía trước có tính từ bắt đầu bằng phụ âm 'small' (/s/) nên ta dùng mạo từ <span class='exp-highlight-green'>a</span>." },
+          whyWrong: [
+            { word: "the", reason: "đây là lời giới thiệu lần đầu về phần thưởng, không dùng the." },
+            { word: "an", reason: "an chỉ đứng trước từ bắt đầu bằng nguyên âm." },
+            { word: "no article", reason: "danh từ đếm được số ít không thể đứng trơ trọi." }
+          ]
+        }
+      },
+
+      // SẮP XẾP ĐOẠN VĂN & HỘI THOẠI (Câu 12 - 14)
+      {
+        id: 12,
+        exTitle: "I. TRẮC NGHIỆM - Mark the letter A, B, C, or D to indicate the correct arrangement of the sentences to make a meaningful paragraph/letter.",
+        question: "Question 12: Arrange the sentences to make a meaningful paragraph:<br><b>a.</b> Firstly, we should clean up all areas regularly. For example, we can organise clean-up activities on the weekends.<br><b>b.</b> There are three things we can do to improve the environment in our school.<br><b>c.</b> Secondly, we ought to set up more rubbish bins. For instance, we can put more rubbish bins in the school gate, in front of each building, or in the playground.<br><b>d.</b> In conclusion, we can improve the environment in our school in many ways and even small actions can make a big difference.<br><b>e.</b> Finally, we should plant more trees. To give an example, we can encourage students to plant trees or flowers in our school because this reduces CO2 and makes the air clean.",
+        options: [
+          { key: "A", text: "e - a - d - b - c", raw: "e - a - d - b - c" },
+          { key: "B", text: "e - b - a - d - c", raw: "e - b - a - d - c" },
+          { key: "C", text: "e - b - a - c - d", raw: "e - b - a - c - d" },
+          { key: "D", text: "b - a - c - e - d", raw: "b - a - c - e - d" }
+        ],
+        correct: "D",
+        explanation: {
+          translation: "Sắp xếp đoạn văn hoàn chỉnh:<br><b>b.</b> Có 3 điều chúng ta có thể làm để cải thiện môi trường tại trường học.<br><b>a.</b> Thứ nhất, chúng ta nên dọn dẹp các khu vực thường xuyên...<br><b>c.</b> Thứ hai, chúng ta nên bố trí thêm nhiều thùng rác...<br><b>e.</b> Cuối cùng, chúng ta nên trồng thêm nhiều cây xanh...<br><b>d.</b> Tóm lại, chúng ta có thể cải thiện môi trường trường học theo nhiều cách...",
+          cards: [
+            { word: "e-a-d-b-c", isCorrect: false, badgeText: "sai câu mở đầu", badgeType: "badge-wrong", meaning: "= mở đầu bằng 'Finally' là hoàn toàn sai" },
+            { word: "e-b-a-d-c", isCorrect: false, badgeText: "sai trật tự", badgeType: "badge-wrong", meaning: "= không mở đầu bằng 'Finally'" },
+            { word: "e-b-a-c-d", isCorrect: false, badgeText: "sai trật tự", badgeType: "badge-wrong", meaning: "= Finally không thể đứng trước Firstly" },
+            { word: "b-a-c-e-d", isCorrect: true, badgeText: "chuẩn logic 100%", badgeType: "badge-correct", meaning: "= Câu chủ đề (b) -> Firstly (a) -> Secondly (c) -> Finally (e) -> In conclusion (d)" }
+          ],
+          whyCorrect: { ruleTitle: "Trật tự từ liên kết liệt kê trong đoạn văn", detail: "Đoạn văn mở đầu bằng câu giới thiệu tổng quát (b: There are three things...) → Tiếp nối tuần tự bằng các liên từ: <span class='exp-highlight-green'>Firstly (a) → Secondly (c) → Finally (e)</span> → Kết đoạn bằng liên từ kết luận <span class='exp-highlight-green'>In conclusion (d)</span>: <span class='exp-highlight-green'>b - a - c - e - d</span>." },
+          whyWrong: [
+            { word: "e-a-d-b-c", reason: "Finally chỉ dùng ở ý cuối cùng." },
+            { word: "e-b-a-d-c", reason: "đảo lộn câu chủ đề và câu kết." },
+            { word: "e-b-a-c-d", reason: "không thể mở đầu đoạn bằng Finally." }
+          ]
+        }
+      },
+      {
+        id: 13,
+        exTitle: "I. TRẮC NGHIỆM - Mark the letter A, B, C, or D to indicate the correct arrangement of the sentences to make a meaningful conversation.",
+        question: "Question 13: Arrange the sentences to make a meaningful conversation:<br><b>a. Lan:</b> Same here. I started taking short breaks and going for a walk—it really helps.<br><b>b. Minh:</b> I feel so stressed with all the revision. I can't focus anymore.<br><b>c. Minh:</b> That sounds good. I'll try that tonight after studying.",
+        options: [
+          { key: "A", text: "a - c - b", raw: "a - c - b" },
+          { key: "B", text: "b - a - c", raw: "b - a - c" },
+          { key: "C", text: "b - c - a", raw: "b - c - a" },
+          { key: "D", text: "a - b - c", raw: "a - b - c" }
+        ],
+        correct: "B",
+        explanation: {
+          translation: "Sắp xếp đoạn hội thoại:<br><b>b. Minh:</b> Tớ thấy áp lực quá với đống bài ôn tập này. Chẳng thể tập trung nổi nữa.<br><b>a. Lan:</b> Tớ cũng từng thế đấy. Tớ đã bắt đầu nghỉ giải lao ngắn và đi dạo một chút—thực sự rất hiệu quả đấy.<br><b>c. Minh:</b> Nghe hay đấy! Tối nay sau khi học tớ sẽ thử xem sao.",
+          cards: [
+            { word: "a-c-b", isCorrect: false, badgeText: "sai mở đầu", badgeType: "badge-wrong", meaning: "= Lan không thể nói 'Same here' khi Minh chưa chia sẻ" },
+            { word: "b-a-c", isCorrect: true, badgeText: "chuẩn giao tiếp", badgeType: "badge-correct", meaning: "= Minh than phiền (b) -> Lan đồng cảm & mách mẹo (a) -> Minh tiếp thu (c)" },
+            { word: "b-c-a", isCorrect: false, badgeText: "sai phản hồi", badgeType: "badge-wrong", meaning: "= Minh tự nói 2 câu liên tiếp không có lời khuyên của Lan" },
+            { word: "a-b-c", isCorrect: false, badgeText: "đứt mạch", badgeType: "badge-wrong", meaning: "= không mở đầu bằng 'Same here'" }
+          ],
+          whyCorrect: { ruleTitle: "Mạch câu chia sẻ và phản hồi lời khuyên", detail: "Minh bắt đầu cuộc trò chuyện bằng việc than thở căng thẳng (b) → Lan đồng cảm 'Same here' và gợi ý đi dạo (a) → Minh khen ngợi ý tưởng 'That sounds good' và hứa sẽ thử (c): <span class='exp-highlight-green'>b - a - c</span>." },
+          whyWrong: [
+            { word: "a-c-b", reason: "'Same here' phải đứng sau câu tâm sự của người đối diện." },
+            { word: "b-c-a", reason: "câu (c) khen ngợi ý tưởng của câu (a), không thể đứng trước (a)." },
+            { word: "a-b-c", reason: "Lan chưa nghe than thở thì không thể nói 'Same here'." }
+          ]
+        }
+      },
+      {
+        id: 14,
+        exTitle: "I. TRẮC NGHIỆM - Mark the letter A, B, C, or D to indicate the correct arrangement of the sentences to make a meaningful letter.",
+        question: "Question 14: Arrange the sentences to make a meaningful letter:<br>Dear Mum,<br><b>a.</b> It feels like the number of assignments and tests is “unbearable” and makes me anxious most days.<br><b>b.</b> I miss home and feel under pressure to study, join clubs, and make friends all at once.<br><b>c.</b> Sometimes, I worry that I am not doing well enough, and it is hurting my focus and happiness.<br><b>d.</b> Please know that I love this school, but I need your understanding and support so I can manage better.<br><b>e.</b> I have been here at boarding school for a few months, and the workload is much more intense than I expected.<br>Love,<br>Huy",
+        options: [
+          { key: "A", text: "b - a - e - d - c", raw: "b - a - e - d - c" },
+          { key: "B", text: "e - a - b - c - d", raw: "e - a - b - c - d" },
+          { key: "C", text: "b - e - c - a - d", raw: "b - e - c - a - d" },
+          { key: "D", text: "b - a - e - c - d", raw: "b - a - e - c - d" }
+        ],
+        correct: "B",
+        explanation: {
+          translation: "Sắp xếp lá thư gửi mẹ:<br>Mẹ yêu quý,<br><b>e.</b> Con đã ở trường nội trú được vài tháng rồi, và khối lượng bài vở nặng hơn nhiều so với con tưởng tượng.<br><b>a.</b> Cảm giác số lượng bài tập và bài kiểm tra dường như 'quá sức chịu đựng' và khiến con lo lắng hầu như mỗi ngày.<br><b>b.</b> Con rất nhớ nhà và cảm thấy áp lực khi vừa phải học, vừa tham gia câu lạc bộ, vừa kết bạn cùng một lúc.<br><b>c.</b> Đôi khi, con lo lắng rằng mình làm chưa đủ tốt, và điều đó ảnh hưởng đến sự tập trung cũng như niềm vui của con.<br><b>d.</b> Xin mẹ hãy hiểu rằng con vẫn rất yêu ngôi trường này, nhưng con cần sự thấu hiểu và động viên của mẹ để có thể vượt qua tốt hơn.<br>Yêu mẹ, Huy",
+          cards: [
+            { word: "b-a-e-d-c", isCorrect: false, badgeText: "sai mở đầu", badgeType: "badge-wrong", meaning: "= câu giới thiệu hoàn cảnh trường nội trú (e) bị đẩy lùi phía sau" },
+            { word: "e-a-b-c-d", isCorrect: true, badgeText: "chuẩn mực 100%", badgeType: "badge-correct", meaning: "= Nêu hoàn cảnh ở trường nội trú (e) -> áp lực bài vở (a) -> nhớ nhà (b) -> tâm lý lo lắng (c) -> mong mẹ thấu hiểu trước khi ký tên (d)" },
+            { word: "b-e-c-a-d", isCorrect: false, badgeText: "lộn xộn", badgeType: "badge-wrong", meaning: "= các câu kể áp lực bị xáo trộn" },
+            { word: "b-a-e-c-d", isCorrect: false, badgeText: "sai mạch", badgeType: "badge-wrong", meaning: "= mở đầu thư chưa nêu bối cảnh" }
+          ],
+          whyCorrect: { ruleTitle: "Mạch cảm xúc và cấu trúc thư cá nhân", detail: "Mở đầu thư nêu hoàn cảnh hiện tại ở trường nội trú (e) → Diễn giải chi tiết áp lực bài tập (a) → Nỗi nhớ nhà và nhiều trách nhiệm cùng lúc (b) → Ảnh hưởng tiêu cực tới tinh thần (c) → Lời nhắn nhủ mong mẹ hỗ trợ trước lời kết (d): <span class='exp-highlight-green'>e - a - b - c - d</span>." },
+          whyWrong: [
+            { word: "b-a-e-d-c", reason: "câu (e) phải đứng đầu để người đọc nắm được bối cảnh trường nội trú." },
+            { word: "b-e-c-a-d", reason: "câu (a) đứng sau câu (c) làm mất mạch liên kết về việc lo lắng." },
+            { word: "b-a-e-c-d", reason: "câu (d) là câu xin sự giúp đỡ, phải nằm ở cuối thư." }
+          ]
+        }
+      },
+
+      // TỪ ĐỒNG NGHĨA & TRÁI NGHĨA (Câu 15 - 18)
+      {
+        id: 15,
+        exTitle: "I. TRẮC NGHIỆM - Mark the letter A, B, C, or D to indicate the word(s) CLOSEST in meaning to the underlined word(s).",
+        question: "Question 15: It's not difficult to reduce your carbon footprint. You can do it by making your daily activities <u>eco-friendly</u>.",
+        options: [
+          { key: "A", text: "climate-friendly", raw: "climate-friendly" },
+          { key: "B", text: "unfriendly", raw: "unfriendly" },
+          { key: "C", text: "kindly", raw: "kindly" },
+          { key: "D", text: "environmentally-friendly", raw: "environmentally-friendly" }
+        ],
+        correct: "D",
+        explanation: {
+          translation: "Không khó để giảm lượng dấu chân carbon của bạn. Bạn có thể làm điều đó bằng cách khiến các hoạt động hàng ngày của mình trở nên thân thiện với môi trường.",
+          cards: [
+            { word: "climate-friendly", isCorrect: false, badgeText: "hẹp nghĩa", badgeType: "badge-structure", meaning: "= thân thiện với khí hậu" },
+            { word: "unfriendly", isCorrect: false, badgeText: "trái nghĩa", badgeType: "badge-wrong", meaning: "= không thân thiện, khó gần" },
+            { word: "kindly", isCorrect: false, badgeText: "trạng từ", badgeType: "badge-structure", meaning: "= tử tế, ân cần (chỉ tính cách)" },
+            { word: "environmentally-friendly", isCorrect: true, badgeText: "đồng nghĩa chuẩn", badgeType: "badge-correct", meaning: "= thân thiện với môi trường (= eco-friendly)" }
+          ],
+          whyCorrect: { ruleTitle: "Từ đồng nghĩa tuyệt đối trong chủ đề môi trường", detail: "Tiền tố 'eco-' là viết tắt của 'ecology / environment'. Do đó, <span class='exp-highlight-green'>eco-friendly</span> = <span class='exp-highlight-green'>environmentally-friendly</span> (thân thiện với môi trường tự nhiên)." },
+          whyWrong: [
+            { word: "climate-friendly", reason: "chỉ nói riêng về biến đổi khí hậu, hẹp nghĩa hơn eco-friendly." },
+            { word: "unfriendly", reason: "trái nghĩa hoàn toàn." },
+            { word: "kindly", reason: "chỉ phẩm chất tốt bụng của con người." }
+          ]
+        }
+      },
+      {
+        id: 16,
+        exTitle: "I. TRẮC NGHIỆM - Mark the letter A, B, C, or D to indicate the word(s) CLOSEST in meaning to the underlined word(s).",
+        question: "Question 16: Walking or cycling are activities that can help reduce your carbon footprint and your <u>impact</u> on the environment.",
+        options: [
+          { key: "A", text: "influence", raw: "influence" },
+          { key: "B", text: "consequence", raw: "consequence" },
+          { key: "C", text: "effect", raw: "effect" },
+          { key: "D", text: "circumstance", raw: "circumstance" }
+        ],
+        correct: "C",
+        explanation: {
+          translation: "Đi bộ hoặc đi xe đạp là những hoạt động có thể giúp giảm thiểu dấu chân carbon và tác động của bạn lên môi trường.",
+          cards: [
+            { word: "influence", isCorrect: false, badgeText: "ảnh hưởng", badgeType: "badge-structure", meaning: "= sự ảnh hưởng lên suy nghĩ/hành vi" },
+            { word: "consequence", isCorrect: false, badgeText: "hậu quả", badgeType: "badge-structure", meaning: "= hậu quả tiêu cực sau một việc" },
+            { word: "effect", isCorrect: true, badgeText: "đồng nghĩa chuẩn", badgeType: "badge-correct", meaning: "= tác động, ảnh hưởng trực tiếp (= impact on)" },
+            { word: "circumstance", isCorrect: false, badgeText: "hoàn cảnh", badgeType: "badge-structure", meaning: "= điều kiện, tình huống xung quanh" }
+          ],
+          whyCorrect: { ruleTitle: "Cặp danh từ đồng nghĩa đi với giới từ 'on'", detail: "Cụm danh từ <span class='exp-highlight-green'>impact on sth</span> đồng nghĩa chặt chẽ nhất với <span class='exp-highlight-green'>effect on sth</span> (tác động trực tiếp lên cái gì)." },
+          whyWrong: [
+            { word: "influence", reason: "thường chỉ sự ảnh hưởng về mặt tinh thần, tư tưởng của con người." },
+            { word: "consequence", reason: "thường đi với giới từ of (consequence of)." },
+            { word: "circumstance", reason: "mang nghĩa hoàn cảnh môi trường sống." }
+          ]
+        }
+      },
+      {
+        id: 17,
+        exTitle: "I. TRẮC NGHIỆM - Mark the letter A, B, C, or D to indicate the word(s) OPPOSITE in meaning to the underlined word(s).",
+        question: "Question 17: Small changes in your daily habits can help <u>reduce</u> the carbon footprint you produce.",
+        options: [
+          { key: "A", text: "lower", raw: "lower" },
+          { key: "B", text: "increase", raw: "increase" },
+          { key: "C", text: "rise", raw: "rise" },
+          { key: "D", text: "improve", raw: "improve" }
+        ],
+        correct: "B",
+        explanation: {
+          translation: "Những thay đổi nhỏ trong thói quen hàng ngày có thể giúp giảm bớt lượng dấu chân carbon mà bạn tạo ra.",
+          cards: [
+            { word: "lower", isCorrect: false, badgeText: "đồng nghĩa", badgeType: "badge-wrong", meaning: "= hạ thấp, giảm bớt (= reduce)" },
+            { word: "increase", isCorrect: true, badgeText: "trái nghĩa chuẩn", badgeType: "badge-correct", meaning: "= làm gia tăng (ngoại động từ: <> reduce)" },
+            { word: "rise", isCorrect: false, badgeText: "nội động từ", badgeType: "badge-wrong", meaning: "= tự tăng lên (không có tân ngữ phía sau)" },
+            { word: "improve", isCorrect: false, badgeText: "cải thiện", badgeType: "badge-structure", meaning: "= nâng cao chất lượng" }
+          ],
+          whyCorrect: { ruleTitle: "Cặp ngoại động từ Giảm - Tăng", detail: "<span class='exp-highlight-green'>reduce</span> (ngoại động từ: làm giảm cái gì) trái nghĩa với <span class='exp-highlight-green'>increase</span> (làm tăng cái gì lên). Đằng sau có tân ngữ 'the carbon footprint' nên phải dùng increase chứ không dùng nội động từ 'rise'." },
+          whyWrong: [
+            { word: "lower", reason: "đây là từ đồng nghĩa." },
+            { word: "rise", reason: "rise là nội động từ, không được đi kèm trực tiếp với tân ngữ." },
+            { word: "improve", reason: "cải tiến, không đối lập về số lượng với reduce." }
+          ]
+        }
+      },
+      {
+        id: 18,
+        exTitle: "I. TRẮC NGHIỆM - Mark the letter A, B, C, or D to indicate the word(s) OPPOSITE in meaning to the underlined word(s).",
+        question: "Question 18: Organic methods help reduce the use of <u>harmful</u> chemicals in food, which is better for our health.",
+        options: [
+          { key: "A", text: "fortunate", raw: "fortunate" },
+          { key: "B", text: "profitable", raw: "profitable" },
+          { key: "C", text: "favorable", raw: "favorable" },
+          { key: "D", text: "helpful", raw: "helpful" }
+        ],
+        correct: "D",
+        explanation: {
+          translation: "Các phương pháp hữu cơ giúp làm giảm việc sử dụng các hóa chất độc hại trong thực phẩm, điều này tốt hơn cho sức khỏe của chúng ta.",
+          cards: [
+            { word: "fortunate", isCorrect: false, badgeText: "may mắn", badgeType: "badge-structure", meaning: "= may mắn, tốt số" },
+            { word: "profitable", isCorrect: false, badgeText: "sinh lời", badgeType: "badge-structure", meaning: "= có lãi, mang lại lợi nhuận" },
+            { word: "favorable", isCorrect: false, badgeText: "thuận lợi", badgeType: "badge-structure", meaning: "= thuận tiện, tán thành" },
+            { word: "helpful", isCorrect: true, badgeText: "trái nghĩa chuẩn", badgeType: "badge-correct", meaning: "= có ích, hữu ích (<> harmful có hại)" }
+          ],
+          whyCorrect: { ruleTitle: "Cặp tính từ Có hại - Có ích", detail: "<span class='exp-highlight-green'>harmful</span> (gây tổn hại, có hại) trái nghĩa trực tiếp với <span class='exp-highlight-green'>helpful / harmless</span> (có ích, hữu ích cho sức khỏe)." },
+          whyWrong: [
+            { word: "fortunate", reason: "chỉ sự may mắn cá nhân." },
+            { word: "profitable", reason: "chỉ hiệu quả kinh doanh tiền bạc." },
+            { word: "favorable", reason: "chỉ điều kiện thời tiết hoặc ý kiến ủng hộ." }
+          ]
+        }
+      },
+
+      // BÀI ĐỌC ĐIỀN TỪ (Câu 19 - 23)
+      {
+        id: 19,
+        exTitle: "I. TRẮC NGHIỆM - Read the following passage and mark the letter A, B, C, or D to indicate the correct word or phrase that best fits each of the numbered blanks.",
+        question: "<div class='passage-box'>The world is experiencing the negative impacts of climate change, largely due to our reliance (19) ________ fossil fuels and unsustainable habits. Green living offers a path to reduce these effects by adopting a more sustainable lifestyle (20) ________ is a necessary practice to ensure the health of our planet and future generations.<br><br>As you walkthrough the rooms of your home or visit your local market, you may notice (21) ________ increasing number of eco-friendly (22) ________ to traditional products and practices. From planting your own food in your yard to discovering the benefits of electric cars, there are a variety of ways for you to have a greener, more sustainable way of living. Starting green living begins with becoming aware of your consumption habits, from the food you eat to the clothes you wear, and (23) ________ a conscious effort to reduce waste and choose eco-friendly options. Joining a community of individuals who share the same interests can provide inspiration, support, and practical tips for making sustainable choices.</div>Question 19: largely due to our reliance (19) ________ fossil fuels",
+        options: [
+          { key: "A", text: "in", raw: "in" },
+          { key: "B", text: "on", raw: "on" },
+          { key: "C", text: "from", raw: "from" },
+          { key: "D", text: "at", raw: "at" }
+        ],
+        correct: "B",
+        explanation: {
+          translation: "phần lớn là do sự phụ thuộc của chúng ta vào nhiên liệu hóa thạch",
+          cards: [
+            { word: "in", isCorrect: false, badgeText: "sai giới từ", badgeType: "badge-wrong", meaning: "= không đi với reliance" },
+            { word: "on", isCorrect: true, badgeText: "chuẩn giới từ", badgeType: "badge-correct", meaning: "= reliance on sth (sự phụ thuộc vào cái gì)" },
+            { word: "from", isCorrect: false, badgeText: "sai giới từ", badgeType: "badge-wrong", meaning: "= không đi với reliance" },
+            { word: "at", isCorrect: false, badgeText: "sai giới từ", badgeType: "badge-wrong", meaning: "= không đi với reliance" }
+          ],
+          whyCorrect: { ruleTitle: "Giới từ đi cùng danh từ Reliance", detail: "Cụm danh từ: <span class='exp-highlight-green'>reliance on sth</span> (bắt nguồn từ động từ rely on: dựa dẫm, phụ thuộc vào cái gì)." },
+          whyWrong: [
+            { word: "in", reason: "reliance không đi với in." },
+            { word: "from", reason: "reliance không đi với from." },
+            { word: "at", reason: "reliance không đi với at." }
+          ]
+        }
+      },
+      {
+        id: 20,
+        exTitle: "I. TRẮC NGHIỆM - Read the following passage and mark the letter A, B, C, or D to indicate the correct word or phrase that best fits each of the numbered blanks.",
+        question: "Question 20: by adopting a more sustainable lifestyle (20) ________ is a necessary practice to ensure the health of our planet",
+        options: [
+          { key: "A", text: "when", raw: "when" },
+          { key: "B", text: "who", raw: "who" },
+          { key: "C", text: "which", raw: "which" },
+          { key: "D", text: "whom", raw: "whom" }
+        ],
+        correct: "C",
+        explanation: {
+          translation: "bằng cách áp dụng một lối sống bền vững hơn, điều mà là một việc làm cần thiết để đảm bảo sức khỏe cho hành tinh",
+          cards: [
+            { word: "when", isCorrect: false, badgeText: "trạng từ quan hệ", badgeType: "badge-wrong", meaning: "= thay cho mốc thời gian" },
+            { word: "who", isCorrect: false, badgeText: "đại từ quan hệ", badgeType: "badge-wrong", meaning: "= thay thế cho người làm chủ ngữ" },
+            { word: "which", isCorrect: true, badgeText: "đại từ quan hệ", badgeType: "badge-correct", meaning: "= thay thế cho danh từ chỉ vật/lối sống 'lifestyle'" },
+            { word: "whom", isCorrect: false, badgeText: "đại từ quan hệ", badgeType: "badge-wrong", meaning: "= thay thế cho người làm tân ngữ" }
+          ],
+          whyCorrect: { ruleTitle: "Đại từ quan hệ thay thế cho danh từ chỉ vật", detail: "Từ đứng trước là <span class='exp-highlight-green'>'a more sustainable lifestyle'</span> (lối sống bền vững - danh từ chỉ sự vật), đóng vai trò làm chủ ngữ cho động từ 'is' ở phía sau → Bắt buộc dùng đại từ quan hệ <span class='exp-highlight-green'>which</span>." },
+          whyWrong: [
+            { word: "when", reason: "chỉ thời gian." },
+            { word: "who", reason: "lifestyle không phải là người." },
+            { word: "whom", reason: "chỉ dùng cho tân ngữ chỉ người." }
+          ]
+        }
+      },
+      {
+        id: 21,
+        exTitle: "I. TRẮC NGHIỆM - Read the following passage and mark the letter A, B, C, or D to indicate the correct word or phrase that best fits each of the numbered blanks.",
+        question: "Question 21: you may notice (21) ________ increasing number of eco-friendly",
+        options: [
+          { key: "A", text: "an", raw: "an" },
+          { key: "B", text: "the", raw: "the" },
+          { key: "C", text: "a", raw: "a" },
+          { key: "D", text: "zero article", raw: "zero article" }
+        ],
+        correct: "A",
+        explanation: {
+          translation: "bạn có thể nhận thấy một số lượng ngày càng gia tăng các sản phẩm thay thế thân thiện với môi trường",
+          cards: [
+            { word: "an", isCorrect: true, badgeText: "mạo từ chuẩn", badgeType: "badge-correct", meaning: "= an increasing number of (đứng trước nguyên âm /ɪ/)" },
+            { word: "the", isCorrect: false, badgeText: "mạo từ xác định", badgeType: "badge-wrong", meaning: "= the number of nghĩa là con số cụ thể" },
+            { word: "a", isCorrect: false, badgeText: "sai nguyên âm", badgeType: "badge-wrong", meaning: "= increasing bắt đầu bằng nguyên âm /ɪ/" },
+            { word: "zero article", isCorrect: false, badgeText: "thiếu mạo từ", badgeType: "badge-wrong", meaning: "= cụm cố định bắt buộc có mạo từ" }
+          ],
+          whyCorrect: { ruleTitle: "Cụm định lượng A/An increasing number of", detail: "Cụm từ mang nghĩa 'ngày càng nhiều': <span class='exp-highlight-green'>a/an number of</span>. Vì từ 'increasing' bắt đầu bằng nguyên âm /ɪ/ nên mạo từ 'a' biến thành <span class='exp-highlight-green'>an</span>." },
+          whyWrong: [
+            { word: "the", reason: "the number of mang nghĩa con số thống kê, đi với động từ số ít." },
+            { word: "a", reason: "không đứng trước từ bắt đầu bằng nguyên âm như increasing." },
+            { word: "zero article", reason: "cụm từ không thể thiếu mạo từ." }
+          ]
+        }
+      },
+      {
+        id: 22,
+        exTitle: "I. TRẮC NGHIỆM - Read the following passage and mark the letter A, B, C, or D to indicate the correct word or phrase that best fits each of the numbered blanks.",
+        question: "Question 22: an increasing number of eco-friendly (22) ________ to traditional products and practices.",
+        options: [
+          { key: "A", text: "living", raw: "living" },
+          { key: "B", text: "energy", raw: "energy" },
+          { key: "C", text: "supplies", raw: "supplies" },
+          { key: "D", text: "alternatives", raw: "alternatives" }
+        ],
+        correct: "D",
+        explanation: {
+          translation: "ngày càng nhiều phương án thay thế thân thiện với môi trường cho các sản phẩm truyền thống.",
+          cards: [
+            { word: "living", isCorrect: false, badgeText: "danh từ", badgeType: "badge-wrong", meaning: "= lối sống, sự sống" },
+            { word: "energy", isCorrect: false, badgeText: "danh từ", badgeType: "badge-wrong", meaning: "= năng lượng" },
+            { word: "supplies", isCorrect: false, badgeText: "danh từ", badgeType: "badge-structure", meaning: "= nguồn cung nhu yếu phẩm" },
+            { word: "alternatives", isCorrect: true, badgeText: "danh từ chuẩn", badgeType: "badge-correct", meaning: "= phương án/sản phẩm thay thế (alternatives to sth)" }
+          ],
+          whyCorrect: { ruleTitle: "Cấu trúc Alternatives to sth", detail: "Danh từ <span class='exp-highlight-green'>alternatives to sth</span> mang nghĩa 'những sự lựa chọn/sản phẩm thay thế cho cái gì'. Xe điện, túi vải... là các lựa chọn thay thế cho sản phẩm truyền thống." },
+          whyWrong: [
+            { word: "living", reason: "không đi với cấu trúc 'living to traditional products'." },
+            { word: "energy", reason: "năng lượng không phù hợp nghĩa sản phẩm truyền thống." },
+            { word: "supplies", reason: "không đi với giới từ 'to' trong ngữ cảnh này." }
+          ]
+        }
+      },
+      {
+        id: 23,
+        exTitle: "I. TRẮC NGHIỆM - Read the following passage and mark the letter A, B, C, or D to indicate the correct word or phrase that best fits each of the numbered blanks.",
+        question: "Question 23: from the food you eat to the clothes you wear, and (23) ________ a conscious effort to reduce waste",
+        options: [
+          { key: "A", text: "getting", raw: "getting" },
+          { key: "B", text: "taking", raw: "taking" },
+          { key: "C", text: "making", raw: "making" },
+          { key: "D", text: "doing", raw: "doing" }
+        ],
+        correct: "C",
+        explanation: {
+          translation: "từ thức ăn bạn ăn đến quần áo bạn mặc, và nỗ lực có ý thức để giảm thiểu rác thải",
+          cards: [
+            { word: "getting", isCorrect: false, badgeText: "động từ", badgeType: "badge-wrong", meaning: "= nhận được, trở nên" },
+            { word: "taking", isCorrect: false, badgeText: "động từ", badgeType: "badge-wrong", meaning: "= cầm nắm, mang đi" },
+            { word: "making", isCorrect: true, badgeText: "collocation chuẩn", badgeType: "badge-correct", meaning: "= make an effort (nỗ lực làm gì)" },
+            { word: "doing", isCorrect: false, badgeText: "động từ", badgeType: "badge-wrong", meaning: "= làm việc" }
+          ],
+          whyCorrect: { ruleTitle: "Cụm từ cố định với Effort", detail: "Kết hợp từ cố định chuẩn ngữ pháp: <span class='exp-highlight-green'>make an effort / make a conscious effort</span> (nỗ lực hết sức làm điều gì). Cấu trúc song hành với 'becoming aware of... and making a conscious effort'." },
+          whyWrong: [
+            { word: "getting", reason: "không kết hợp với effort." },
+            { word: "taking", reason: "không đi với an effort." },
+            { word: "doing", reason: "do an effort là lỗi sai kinh điển trong tiếng Anh." }
+          ]
+        }
+      },
+
+      // BÀI ĐỌC HIỂU (Câu 24 - 28)
+      {
+        id: 24,
+        exTitle: "I. TRẮC NGHIỆM - Read the following passage and mark the letter A, B, C or D to indicate the correct answer to each of the questions.",
+        question: "Question 24: Which of the following can be the best title for the passage?",
+        options: [
+          { key: "A", text: "Natural Resources", raw: "Natural Resources" },
+          { key: "B", text: "The Benefits of Green Living", raw: "The Benefits of Green Living" },
+          { key: "C", text: "The Effects of Climate Change", raw: "The Effects of Climate Change" },
+          { key: "D", text: "A Healthy Environment", raw: "A Healthy Environment" }
+        ],
+        correct: "B",
+        explanation: {
+          translation: "Tiêu đề nào sau đây là phù hợp nhất cho đoạn văn?",
+          cards: [
+            { word: "Natural Resources", isCorrect: false, badgeText: "quá hẹp", badgeType: "badge-wrong", meaning: "= chỉ là nội dung của đoạn 2" },
+            { word: "The Benefits of Green Living", isCorrect: true, badgeText: "tiêu đề chuẩn", badgeType: "badge-correct", meaning: "= Lợi ích của lối sống xanh (bao quát toàn bài)" },
+            { word: "The Effects of Climate Change", isCorrect: false, badgeText: "quá hẹp", badgeType: "badge-wrong", meaning: "= chỉ là nội dung của đoạn 3" },
+            { word: "A Healthy Environment", isCorrect: false, badgeText: "chưa sát", badgeType: "badge-wrong", meaning: "= chưa nêu bật được hành động sống xanh" }
+          ],
+          whyCorrect: { ruleTitle: "Xác định ý chính bao quát toàn bài (Main Idea)", detail: "Cuối đoạn 1 tác giả chốt luận điểm: <span class='exp-highlight-green'>'Therefore, two main environmental benefits can be realised with greener living'</span>. Sau đó đoạn 2 trình bày 'Firstly (conserve natural resources)' và đoạn 3 là 'Secondly (reduce climate change)'. Do đó tiêu đề chuẩn nhất là <span class='exp-highlight-green'>The Benefits of Green Living</span>." },
+          whyWrong: [
+            { word: "Natural Resources", reason: "chỉ là 1 luận điểm nhỏ ở đoạn 2." },
+            { word: "The Effects of Climate Change", reason: "chỉ là dẫn chứng ở đoạn 3." },
+            { word: "A Healthy Environment", reason: "quá chung chung, không làm nổi bật trọng tâm greener living." }
+          ]
+        }
+      },
+      {
+        id: 25,
+        exTitle: "I. TRẮC NGHIỆM - Read the following passage and mark the letter A, B, C or D to indicate the correct answer to each of the questions.",
+        question: "Question 25: The word “depleted” in paragraph 2 is opposite in meaning to ________.",
+        options: [
+          { key: "A", text: "run out", raw: "run out" },
+          { key: "B", text: "picked up", raw: "picked up" },
+          { key: "C", text: "filled in", raw: "filled in" },
+          { key: "D", text: "searched for", raw: "searched for" }
+        ],
+        correct: "C",
+        explanation: {
+          translation: "Từ “depleted” (cạn kiệt) ở đoạn 2 trái nghĩa với từ nào sau đây?",
+          cards: [
+            { word: "run out", isCorrect: false, badgeText: "đồng nghĩa", badgeType: "badge-wrong", meaning: "= cạn kiệt, hết sạch (= depleted)" },
+            { word: "picked up", isCorrect: false, badgeText: "nhặt lên", badgeType: "badge-structure", meaning: "= nhặt lên, đón người" },
+            { word: "filled in", isCorrect: true, badgeText: "trái nghĩa chuẩn", badgeType: "badge-correct", meaning: "= làm đầy, bổ sung đầy lại (<> depleted cạn kiệt)" },
+            { word: "searched for", isCorrect: false, badgeText: "tìm kiếm", badgeType: "badge-structure", meaning: "= tìm kiếm thứ gì" }
+          ],
+          whyCorrect: { ruleTitle: "Tìm từ trái nghĩa trong văn cảnh", detail: "<span class='exp-highlight-green'>depleted</span> nghĩa là bị dùng cạn kiệt, cạn khô tài nguyên. Trái nghĩa với cạn kiệt là được làm đầy, bổ sung vào: <span class='exp-highlight-green'>filled in / replenished</span>." },
+          whyWrong: [
+            { word: "run out", reason: "đây là từ đồng nghĩa, đề bài yêu cầu tìm từ trái nghĩa (opposite)." },
+            { word: "picked up", reason: "không đối lập nghĩa." },
+            { word: "searched for", reason: "nghĩa là tìm kiếm." }
+          ]
+        }
+      },
+      {
+        id: 26,
+        exTitle: "I. TRẮC NGHIỆM - Read the following passage and mark the letter A, B, C or D to indicate the correct answer to each of the questions.",
+        question: "Question 26: The word “This” in paragraph 3 refers to ________.",
+        options: [
+          { key: "A", text: "the activity of releasing carbon dioxide and causing air pollution", raw: "the activity of releasing carbon dioxide and causing air pollution" },
+          { key: "B", text: "the harmful effect of climate change", raw: "the harmful effect of climate change" },
+          { key: "C", text: "the reliance on fossil fuels", raw: "the reliance on fossil fuels" },
+          { key: "D", text: "green living", raw: "green living" }
+        ],
+        correct: "A",
+        explanation: {
+          translation: "Từ “This” ở đoạn 3 quy chiếu đến điều gì?",
+          cards: [
+            { word: "releasing CO2...", isCorrect: true, badgeText: "quy chiếu chuẩn", badgeType: "badge-correct", meaning: "= hành động xả CO2 và gây ô nhiễm không khí" },
+            { word: "harmful effect", isCorrect: false, badgeText: "sai đối tượng", badgeType: "badge-wrong", meaning: "= tác hại của biến đổi khí hậu" },
+            { word: "reliance on fuels", isCorrect: false, badgeText: "sai vị trí", badgeType: "badge-wrong", meaning: "= sự phụ thuộc nhiên liệu" },
+            { word: "green living", isCorrect: false, badgeText: "ngược nghĩa", badgeType: "badge-wrong", meaning: "= lối sống xanh" }
+          ],
+          whyCorrect: { ruleTitle: "Kỹ năng tìm từ quy chiếu (Reference Question)", detail: "Đọc câu đứng ngay trước: 'People continue to release carbon dioxide into the atmosphere, further polluting the air. <u>This</u> is leading to dramatic changes in temperatures...'. Đại từ 'This' thay thế cho toàn bộ hành động xả khí thải CO2 gây ô nhiễm không khí ở câu trước." },
+          whyWrong: [
+            { word: "harmful effect", reason: "đây là kết quả do 'This' gây ra chứ không phải bản thân từ 'This'." },
+            { word: "reliance on fossil fuels", reason: "ở câu đầu đoạn, quá xa từ quy chiếu." },
+            { word: "green living", reason: "lối sống xanh là giải pháp ngăn chặn 'This'." }
+          ]
+        }
+      },
+      {
+        id: 27,
+        exTitle: "I. TRẮC NGHIỆM - Read the following passage and mark the letter A, B, C or D to indicate the correct answer to each of the questions.",
+        question: "Question 27: According to paragraph 2, natural resources ________.",
+        options: [
+          { key: "A", text: "are not precious to human on Earth", raw: "are not precious to human on Earth" },
+          { key: "B", text: "are hard to be conserved", raw: "are hard to be conserved" },
+          { key: "C", text: "has been used more and more since 1970s", raw: "has been used more and more since 1970s" },
+          { key: "D", text: "can not disappear", raw: "can not disappear" }
+        ],
+        correct: "C",
+        explanation: {
+          translation: "Theo đoạn văn số 2, tài nguyên thiên nhiên ________.",
+          cards: [
+            { word: "not precious", isCorrect: false, badgeText: "sai thông tin", badgeType: "badge-wrong", meaning: "= không quý giá (bài ghi 'precious resources')" },
+            { word: "hard to be conserved", isCorrect: false, badgeText: "không có thông tin", badgeType: "badge-wrong", meaning: "= khó bảo tồn" },
+            { word: "used more and more", isCorrect: true, badgeText: "khớp bài đọc", badgeType: "badge-correct", meaning: "= được sử dụng ngày càng nhiều từ những năm 1970 (tăng gấp 3 lần)" },
+            { word: "can not disappear", isCorrect: false, badgeText: "sai thông tin", badgeType: "badge-wrong", meaning: "= không thể biến mất (bài ghi 'beginning to disappear')" }
+          ],
+          whyCorrect: { ruleTitle: "Tìm chi tiết thông tin trong bài đọc (Detail Question)", detail: "Căn cứ câu trong đoạn 2: <span class='exp-highlight-green'>'it is estimated that the use of natural resources has more than tripled since 1970'</span> (việc sử dụng tài nguyên thiên nhiên đã tăng hơn gấp 3 lần kể từ năm 1970) → tương đương với việc tài nguyên được sử dụng ngày càng nhiều." },
+          whyWrong: [
+            { word: "not precious", reason: "bài viết khẳng định đây là tài nguyên quý giá (precious resources)." },
+            { word: "hard to be conserved", reason: "bài không nói khó bảo tồn mà nhấn mạnh 'people can conserve'." },
+            { word: "can not disappear", reason: "bài nêu rõ chúng đang dần biến mất (beginning to disappear)." }
+          ]
+        }
+      },
+      {
+        id: 28,
+        exTitle: "I. TRẮC NGHIỆM - Read the following passage and mark the letter A, B, C or D to indicate the correct answer to each of the questions.",
+        question: "Question 28: Which of the following is NOT TRUE according to the passage?",
+        options: [
+          { key: "A", text: "The well-being of the environment is as important as that of each person", raw: "The well-being of the environment is as important as that of each person" },
+          { key: "B", text: "Climate change is a problem because of the reliance on fossil fuels", raw: "Climate change is a problem because of the reliance on fossil fuels" },
+          { key: "C", text: "Carbon dioxide contributes to air pollution", raw: "Carbon dioxide contributes to air pollution" },
+          { key: "D", text: "Climate change can only be stopped by actions of governments", raw: "Climate change can only be stopped by actions of governments" }
+        ],
+        correct: "D",
+        explanation: {
+          translation: "Khẳng định nào sau đây là KHÔNG ĐÚNG theo bài đọc?",
+          cards: [
+            { word: "well-being important", isCorrect: false, badgeText: "thông tin đúng", badgeType: "badge-structure", meaning: "= sức khỏe môi trường quan trọng như của con người (khớp đoạn 1)" },
+            { word: "climate change fossil fuels", isCorrect: false, badgeText: "thông tin đúng", badgeType: "badge-structure", meaning: "= BĐKH do nhiên liệu hóa thạch (khớp đoạn 3)" },
+            { word: "CO2 air pollution", isCorrect: false, badgeText: "thông tin đúng", badgeType: "badge-structure", meaning: "= CO2 gây ô nhiễm không khí (khớp đoạn 3)" },
+            { word: "only stopped by governments", isCorrect: true, badgeText: "sai với bài đọc", badgeType: "badge-correct", meaning: "= CHỈ có thể ngăn chặn bởi chính phủ (sai! Mỗi cá nhân đều góp phần)" }
+          ],
+          whyCorrect: { ruleTitle: "Tìm thông tin sai (Negative Fact Question)", detail: "Đoạn cuối bài viết khẳng định: <span class='exp-highlight-green'>'For every person who makes an effort to reduce his or her carbon footprint... climate change can begin to become less of a concern'</span> (Mỗi cá nhân nỗ lực đều giúp đẩy lùi BĐKH). Do đó, câu D cho rằng 'CHỈ có hành động của chính phủ mới ngăn chặn được' là hoàn toàn SAI." },
+          whyWrong: [
+            { word: "A", reason: "đoạn 1 nêu: 'the well-being of the environment is just as important'." },
+            { word: "B", reason: "đoạn 3 nêu: 'Primarily due to human's reliance on fossil fuels'." },
+            { word: "C", reason: "đoạn 3 nêu: 'release carbon dioxide... further polluting the air'." }
+          ]
+        }
+      },
+
+      // II. TỰ LUẬN (CHUYỂN THÀNH DẠNG TRẮC NGHIỆM ABCD DỄ TƯƠNG TÁC)
+      {
+        id: 29,
+        exTitle: "II. TỰ LUẬN - Use the verbs in their correct forms and add some words where necessary to make meaningful sentences.",
+        question: "Question 1 (Viết câu hoàn chỉnh): You / turn / appliances / when / in use / save / energy.",
+        options: [
+          { key: "A", text: "You should turn off appliances when they are not in use to save energy.", raw: "You should turn off appliances when they are not in use to save energy." },
+          { key: "B", text: "You turn off appliances when in use to save energy.", raw: "You turn off appliances when in use to save energy." },
+          { key: "C", text: "You should turn on appliances when not in use to save energy.", raw: "You should turn on appliances when not in use to save energy." },
+          { key: "D", text: "You must turn appliances when not in use saving energy.", raw: "You must turn appliances when not in use saving energy." }
+        ],
+        correct: "A",
+        explanation: {
+          translation: "Câu hoàn chỉnh: Bạn nên tắt các thiết bị khi chúng không được sử dụng để tiết kiệm năng lượng.",
+          cards: [
+            { word: "Câu A", isCorrect: true, badgeText: "chuẩn 100%", badgeType: "badge-correct", meaning: "= đầy đủ lời khuyên should turn off, mệnh đề when they are not in use, mục đích to save energy" },
+            { word: "Câu B", isCorrect: false, badgeText: "sai nghĩa", badgeType: "badge-wrong", meaning: "= 'when in use' nghĩa là tắt khi đang dùng (sai logic)" },
+            { word: "Câu C", isCorrect: false, badgeText: "sai phrasal verb", badgeType: "badge-wrong", meaning: "= 'turn on' nghĩa là bật thiết bị lên" },
+            { word: "Câu D", isCorrect: false, badgeText: "thiếu giới từ", badgeType: "badge-wrong", meaning: "= thiếu off sau turn và sai saving energy" }
+          ],
+          whyCorrect: { ruleTitle: "Cấu trúc lời khuyên & Mệnh đề trạng ngữ chỉ thời gian", detail: "1. Đưa ra lời khuyên: <span class='exp-highlight-green'>You should turn off appliances</span>.<br>2. Trạng thái không dùng: <span class='exp-highlight-green'>when they are not in use</span>.<br>3. Chỉ mục đích: <span class='exp-highlight-green'>to save energy</span>." },
+          whyWrong: [
+            { word: "Câu B", reason: "thiếu phủ định, tắt đồ khi đang dùng là phi lý." },
+            { word: "Câu C", reason: "turn on nghĩa là bật điện." },
+            { word: "Câu D", reason: "turn thiếu giới từ off và sai cấu trúc mục đích to V." }
+          ]
+        }
+      },
+      {
+        id: 30,
+        exTitle: "II. TỰ LUẬN - Use the verbs in their correct forms and add some words where necessary to make meaningful sentences.",
+        question: "Question 2 (Viết câu hoàn chỉnh): Cut / plastic / products / reduce / plastic pollution.",
+        options: [
+          { key: "A", text: "Cutting down on plastic products helps to reduce plastic pollution.", raw: "Cutting down on plastic products helps to reduce plastic pollution." },
+          { key: "B", text: "Cut plastic products to reduce plastic pollution.", raw: "Cut plastic products to reduce plastic pollution." },
+          { key: "C", text: "Cutting off plastic products reduce plastic pollution.", raw: "Cutting off plastic products reduce plastic pollution." },
+          { key: "D", text: "To cut plastic products reduce plastic pollution.", raw: "To cut plastic products reduce plastic pollution." }
+        ],
+        correct: "A",
+        explanation: {
+          translation: "Câu hoàn chỉnh: Cắt giảm các sản phẩm nhựa giúp làm giảm thiểu ô nhiễm rác thải nhựa.",
+          cards: [
+            { word: "Câu A", isCorrect: true, badgeText: "chuẩn ngữ pháp", badgeType: "badge-correct", meaning: "= Danh động từ làm chủ ngữ 'Cutting down on...' + helps to reduce..." },
+            { word: "Câu B", isCorrect: false, badgeText: "sai cấu trúc", badgeType: "badge-wrong", meaning: "= dùng cut đơn thuần không mang nghĩa cắt giảm tiêu dùng" },
+            { word: "Câu C", isCorrect: false, badgeText: "sai phrasal verb", badgeType: "badge-wrong", meaning: "= cut off nghĩa là cắt đứt (nguồn điện/nước)" },
+            { word: "Câu D", isCorrect: false, badgeText: "sai vị ngữ", badgeType: "badge-wrong", meaning: "= To cut... reduce thiếu liên kết động từ chính" }
+          ],
+          whyCorrect: { ruleTitle: "Cụm động từ Cut down on & Danh động từ làm chủ ngữ", detail: "1. Cụm từ cắt giảm tiêu thụ: <span class='exp-highlight-green'>cut down on plastic products</span>.<br>2. Biến thành danh động từ làm chủ ngữ: <span class='exp-highlight-green'>Cutting down on plastic products helps to reduce plastic pollution</span>." },
+          whyWrong: [
+            { word: "Câu B", reason: "thiếu giới từ down on trong cụm từ cắt giảm." },
+            { word: "Câu C", reason: "cut off mang nghĩa cắt liên lạc hoặc cúp điện." },
+            { word: "Câu D", reason: "thiếu động từ liên kết chia thì chuẩn." }
+          ]
+        }
+      },
+      {
+        id: 31,
+        exTitle: "II. TỰ LUẬN - Use the verbs in their correct forms and add some words where necessary to make meaningful sentences.",
+        question: "Question 3 (Viết câu hoàn chỉnh): Green / living / be / adopt / people / world.",
+        options: [
+          { key: "A", text: "Green living is being adopted by more and more people around the world.", raw: "Green living is being adopted by more and more people around the world." },
+          { key: "B", text: "Green living is adopt by people in world.", raw: "Green living is adopt by people in world." },
+          { key: "C", text: "Green living was adopted with people world.", raw: "Green living was adopted with people world." },
+          { key: "D", text: "Green living adopts by people over world.", raw: "Green living adopts by people over world." }
+        ],
+        correct: "A",
+        explanation: {
+          translation: "Câu hoàn chỉnh: Lối sống xanh đang được tiếp nhận bởi ngày càng nhiều người trên khắp thế giới.",
+          cards: [
+            { word: "Câu A", isCorrect: true, badgeText: "chuẩn bị động", badgeType: "badge-correct", meaning: "= is being adopted (bị động tiếp diễn), by people around the world" },
+            { word: "Câu B", isCorrect: false, badgeText: "chưa chia V3", badgeType: "badge-wrong", meaning: "= 'is adopt' sai ngữ pháp bị động" },
+            { word: "Câu C", isCorrect: false, badgeText: "sai giới từ", badgeType: "badge-wrong", meaning: "= bị động bởi ai dùng 'by' chứ không dùng 'with'" },
+            { word: "Câu D", isCorrect: false, badgeText: "chủ động sai", badgeType: "badge-wrong", meaning: "= lối sống xanh không tự thực hiện hành động adopt" }
+          ],
+          whyCorrect: { ruleTitle: "Thể bị động của động từ Adopt", detail: "Lối sống xanh (Green living) là đối tượng chịu tác động được con người đón nhận → Thể bị động: <span class='exp-highlight-green'>is being adopted / is adopted by people around the world</span>." },
+          whyWrong: [
+            { word: "Câu B", reason: "sau to be phải là V3/ed (adopted) chứ không để nguyên adopt." },
+            { word: "Câu C", reason: "tác nhân gây ra hành động dùng giới từ 'by'." },
+            { word: "Câu D", reason: "chia thể chủ động là sai." }
+          ]
+        }
+      },
+      {
+        id: 32,
+        exTitle: "II. TỰ LUẬN - Use the verbs in their correct forms and add some words where necessary to make meaningful sentences.",
+        question: "Question 4 (Viết câu hoàn chỉnh): Parents / have / teach / their children / be honest and show respect to older people / an early age.",
+        options: [
+          { key: "A", text: "Parents have to teach their children to be honest and show respect to older people from an early age.", raw: "Parents have to teach their children to be honest and show respect to older people from an early age." },
+          { key: "B", text: "Parents have teach their children be honest and show respect to older people at an early age.", raw: "Parents have teach their children be honest and show respect to older people at an early age." },
+          { key: "C", text: "Parents has to teach their children to be honest and show respect to older people from an early age.", raw: "Parents has to teach their children to be honest and show respect to older people from an early age." },
+          { key: "D", text: "Parents have to teaching their children be honest and show respect to older people from an early age.", raw: "Parents have to teaching their children be honest and show respect to older people from an early age." }
+        ],
+        correct: "A",
+        explanation: {
+          translation: "Câu hoàn chỉnh: Cha mẹ phải dạy con cái mình sống trung thực và thể hiện sự tôn trọng với người lớn tuổi ngay từ khi còn nhỏ.",
+          cards: [
+            { word: "Câu A", isCorrect: true, badgeText: "chuẩn ngữ pháp", badgeType: "badge-correct", meaning: "= have to teach sb to be..., from an early age" },
+            { word: "Câu B", isCorrect: false, badgeText: "thiếu 'to'", badgeType: "badge-wrong", meaning: "= have teach và teach children be là sai cấu trúc" },
+            { word: "Câu C", isCorrect: false, badgeText: "chia sai số nhiều", badgeType: "badge-wrong", meaning: "= Parents là danh từ số nhiều, không chia 'has'" },
+            { word: "Câu D", isCorrect: false, badgeText: "sai sau have to", badgeType: "badge-wrong", meaning: "= sau have to phải là V nguyên mẫu (teach), không dùng teaching" }
+          ],
+          whyCorrect: { ruleTitle: "Cấu trúc Have to + V & Teach sb to do sth", detail: "1. Bổn phận: <span class='exp-highlight-green'>Parents have to teach</span>.<br>2. Cấu trúc dạy ai làm gì: <span class='exp-highlight-green'>teach sb to V</span> → teach their children to be honest.<br>3. Cụm từ từ thuở nhỏ: <span class='exp-highlight-green'>from an early age</span>." },
+          whyWrong: [
+            { word: "Câu B", reason: "thiếu to ở cả have to và teach sb to do sth." },
+            { word: "Câu C", reason: "Parents số nhiều phải đi với have to." },
+            { word: "Câu D", reason: "have to đi với động từ nguyên mẫu." }
+          ]
+        }
+      },
+      {
+        id: 33,
+        exTitle: "II. TỰ LUẬN - Complete the following sentences with the correct forms of the words in capitals.",
+        question: "Question 5: What are the ________ benefits for our country as a member of this international organization? (ECONOMY)",
+        options: [
+          { key: "A", text: "economic", raw: "economic" },
+          { key: "B", text: "economical", raw: "economical" },
+          { key: "C", text: "economically", raw: "economically" },
+          { key: "D", text: "economics", raw: "economics" }
+        ],
+        correct: "A",
+        explanation: {
+          translation: "Những lợi ích kinh tế dành cho đất nước chúng ta khi là thành viên của tổ chức quốc tế này là gì?",
+          cards: [
+            { word: "economic", isCorrect: true, badgeText: "tính từ chuẩn", badgeType: "badge-correct", meaning: "= thuộc về kinh tế (economic benefits)" },
+            { word: "economical", isCorrect: false, badgeText: "tính từ tiết kiệm", badgeType: "badge-wrong", meaning: "= tiết kiệm tiền bạc/nhiên liệu" },
+            { word: "economically", isCorrect: false, badgeText: "trạng từ", badgeType: "badge-wrong", meaning: "= về phương diện kinh tế" },
+            { word: "economics", isCorrect: false, badgeText: "danh từ", badgeType: "badge-wrong", meaning: "= môn kinh tế học" }
+          ],
+          whyCorrect: { ruleTitle: "Phân biệt cặp tính từ Economic và Economical", detail: "Trước danh từ 'benefits' cần một tính từ mang nghĩa 'thuộc về nền kinh tế' → Dùng <span class='exp-highlight-green'>economic</span>. 'Economical' mang nghĩa tiết kiệm (ví dụ: economical car: xe ăn ít xăng)." },
+          whyWrong: [
+            { word: "economical", reason: "mang nghĩa tiết kiệm, không phù hợp lợi ích kinh tế." },
+            { word: "economically", reason: "trạng từ không đứng trước bổ nghĩa cho danh từ benefits." },
+            { word: "economics", reason: "đây là danh từ chỉ ngành học." }
+          ]
+        }
+      },
+      {
+        id: 34,
+        exTitle: "II. TỰ LUẬN - Complete the following sentences with the correct forms of the words in capitals.",
+        question: "Question 6: I would like to express my ________ to everyone for their hard work. (GRATEFUL)",
+        options: [
+          { key: "A", text: "gratefully", raw: "gratefully" },
+          { key: "B", text: "gratefulness", raw: "gratefulness" },
+          { key: "C", text: "gratitude", raw: "gratitude" },
+          { key: "D", text: "ungrateful", raw: "ungrateful" }
+        ],
+        correct: "C",
+        explanation: {
+          translation: "Tôi muốn bày tỏ lòng biết ơn của mình đến tất cả mọi người vì sự làm việc chăm chỉ của họ.",
+          cards: [
+            { word: "gratefully", isCorrect: false, badgeText: "trạng từ", badgeType: "badge-wrong", meaning: "= một cách biết ơn" },
+            { word: "gratefulness", isCorrect: false, badgeText: "ít dùng", badgeType: "badge-wrong", meaning: "= tính từ hóa danh từ hiếm gặp" },
+            { word: "gratitude", isCorrect: true, badgeText: "danh từ chuẩn", badgeType: "badge-correct", meaning: "= lòng biết ơn (express my gratitude)" },
+            { word: "ungrateful", isCorrect: false, badgeText: "tính từ", badgeType: "badge-wrong", meaning: "= vô ơn, bạc bẽo" }
+          ],
+          whyCorrect: { ruleTitle: "Cụm từ Bày tỏ lòng biết ơn (Collocation)", detail: "Sau tính từ sở hữu 'my' cần một danh từ. Cụm từ trang trọng chuẩn mực trong tiếng Anh: <span class='exp-highlight-green'>express one's gratitude to sb</span> (bày tỏ lòng biết ơn chân thành tới ai)." },
+          whyWrong: [
+            { word: "gratefully", reason: "trạng từ không đứng sau tính từ sở hữu 'my'." },
+            { word: "gratefulness", reason: "trong văn phong chuẩn mực luôn dùng 'gratitude'." },
+            { word: "ungrateful", reason: "đây là tính từ mang nghĩa tiêu cực." }
+          ]
+        }
+      },
+      {
+        id: 35,
+        exTitle: "II. TỰ LUẬN - Complete the following sentences with the correct forms of the words in capitals.",
+        question: "Question 7: He needs all the support and ________ he can get. (ENCOURAGE)",
+        options: [
+          { key: "A", text: "encouraging", raw: "encouraging" },
+          { key: "B", text: "encouragement", raw: "encouragement" },
+          { key: "C", text: "encouraged", raw: "encouraged" },
+          { key: "D", text: "encouragingly", raw: "encouragingly" }
+        ],
+        correct: "B",
+        explanation: {
+          translation: "Anh ấy cần tất cả sự hỗ trợ và nguồn động viên mà anh ấy có thể có được.",
+          cards: [
+            { word: "encouraging", isCorrect: false, badgeText: "tính từ", badgeType: "badge-wrong", meaning: "= mang tính khích lệ" },
+            { word: "encouragement", isCorrect: true, badgeText: "danh từ chuẩn", badgeType: "badge-correct", meaning: "= sự động viên, nguồn khích lệ" },
+            { word: "encouraged", isCorrect: false, badgeText: "phân từ", badgeType: "badge-wrong", meaning: "= cảm thấy được động viên" },
+            { word: "encouragingly", isCorrect: false, badgeText: "trạng từ", badgeType: "badge-wrong", meaning: "= một cách khích lệ" }
+          ],
+          whyCorrect: { ruleTitle: "Cấu trúc song hành với liên từ 'and'", detail: "Trước liên từ 'and' là danh từ 'support' (sự ủng hộ), do đó từ đứng sau 'and' cũng bắt buộc phải là một danh từ song hành: <span class='exp-highlight-green'>support and encouragement</span>." },
+          whyWrong: [
+            { word: "encouraging", reason: "tính từ không thể song hành với danh từ support." },
+            { word: "encouraged", reason: "dạng quá khứ/phân từ không làm danh từ được." },
+            { word: "encouragingly", reason: "đây là trạng từ." }
+          ]
+        }
+      },
+      {
+        id: 36,
+        exTitle: "II. TỰ LUẬN - Complete the following sentences with the correct forms of the words in capitals.",
+        question: "Question 8: To be fair, we need to divide the tasks ________ (EQUAL)",
+        options: [
+          { key: "A", text: "equally", raw: "equally" },
+          { key: "B", text: "equality", raw: "equality" },
+          { key: "C", text: "equalize", raw: "equalize" },
+          { key: "D", text: "equal", raw: "equal" }
+        ],
+        correct: "A",
+        explanation: {
+          translation: "Để công bằng, chúng ta cần phân chia công việc một cách đồng đều.",
+          cards: [
+            { word: "equally", isCorrect: true, badgeText: "trạng từ chuẩn", badgeType: "badge-correct", meaning: "= một cách công bằng, đồng đều" },
+            { word: "equality", isCorrect: false, badgeText: "danh từ", badgeType: "badge-wrong", meaning: "= sự bình đẳng" },
+            { word: "equalize", isCorrect: false, badgeText: "động từ", badgeType: "badge-wrong", meaning: "= san bằng, cân bằng tỉ số" },
+            { word: "equal", isCorrect: false, badgeText: "tính từ", badgeType: "badge-wrong", meaning: "= công bằng, ngang bằng" }
+          ],
+          whyCorrect: { ruleTitle: "Vị trí của Trạng từ bổ nghĩa cho động từ thường", detail: "Động từ 'divide' (phân chia) đi kèm tân ngữ 'the tasks', từ đứng cuối câu bổ nghĩa cho cách thức phân chia phải là một trạng từ: <span class='exp-highlight-green'>divide the tasks equally</span>." },
+          whyWrong: [
+            { word: "equality", reason: "danh từ không thể đứng bổ nghĩa cho hành động divide." },
+            { word: "equalize", reason: "đây là động từ." },
+            { word: "equal", reason: "tính từ không bổ nghĩa trực tiếp cho động từ thường divide." }
+          ]
+        }
+      },
+      {
+        id: 37,
+        exTitle: "II. TỰ LUẬN - Rearrange the words/phrases to make meaningful sentences.",
+        question: "Question 9: Rearrange the words/phrases:<br><b>is / at the moment. / The / improving / financial / company's / situation /</b>",
+        options: [
+          { key: "A", text: "The company's financial situation is improving at the moment.", raw: "The company's financial situation is improving at the moment." },
+          { key: "B", text: "The financial company's situation is improving at the moment.", raw: "The financial company's situation is improving at the moment." },
+          { key: "C", text: "The company's situation financial is improving at the moment.", raw: "The company's situation financial is improving at the moment." },
+          { key: "D", text: "Financial situation is improving the company's at the moment.", raw: "Financial situation is improving the company's at the moment." }
+        ],
+        correct: "A",
+        explanation: {
+          translation: "Tình hình tài chính của công ty đang được cải thiện vào thời điểm hiện tại.",
+          cards: [
+            { word: "Câu A", isCorrect: true, badgeText: "chuẩn ngữ pháp", badgeType: "badge-correct", meaning: "= The company's financial situation (tình hình tài chính của công ty) + is improving..." },
+            { word: "Câu B", isCorrect: false, badgeText: "sai vị trí sở hữu", badgeType: "badge-wrong", meaning: "= 'The financial company's situation' là tình hình của công ty tài chính" },
+            { word: "Câu C", isCorrect: false, badgeText: "sai trật tự tính từ", badgeType: "badge-wrong", meaning: "= tính từ financial phải đứng trước danh từ situation" },
+            { word: "Câu D", isCorrect: false, badgeText: "lộn xộn", badgeType: "badge-wrong", meaning: "= xáo trộn cấu trúc sở hữu" }
+          ],
+          whyCorrect: { ruleTitle: "Trật tự cụm danh từ có sở hữu cách", detail: "Cụm danh từ làm chủ ngữ: <span class='exp-highlight-green'>The company's financial situation</span> (Sở hữu cách + tính từ + danh từ chính) kết hợp thì hiện tại tiếp diễn: <span class='exp-highlight-green'>is improving at the moment</span>." },
+          whyWrong: [
+            { word: "Câu B", reason: "đổi nghĩa thành công ty tài chính thay vì tình hình tài chính." },
+            { word: "Câu C", reason: "tính từ không đứng sau danh từ." },
+            { word: "Câu D", reason: "mất cấu trúc câu hoàn chỉnh." }
+          ]
+        }
+      },
+      {
+        id: 38,
+        exTitle: "II. TỰ LUẬN - Rearrange the words/phrases to make meaningful sentences.",
+        question: "Question 10: Rearrange the words/phrases:<br><b>retiring / Linda / is / of / thinking / early / she/ anymore./ because / isn't / happy / at work</b>",
+        options: [
+          { key: "A", text: "Linda is thinking of retiring early because she isn't happy at work anymore.", raw: "Linda is thinking of retiring early because she isn't happy at work anymore." },
+          { key: "B", text: "Linda is thinking early of retiring because she isn't happy at work anymore.", raw: "Linda is thinking early of retiring because she isn't happy at work anymore." },
+          { key: "C", text: "Because Linda isn't happy at work anymore she thinking of retiring early.", raw: "Because Linda isn't happy at work anymore she thinking of retiring early." },
+          { key: "D", text: "Linda is retiring of thinking early because she isn't happy at work anymore.", raw: "Linda is retiring of thinking early because she isn't happy at work anymore." }
+        ],
+        correct: "A",
+        explanation: {
+          translation: "Linda đang cân nhắc việc nghỉ hưu sớm bởi vì cô ấy không còn cảm thấy vui vẻ trong công việc nữa.",
+          cards: [
+            { word: "Câu A", isCorrect: true, badgeText: "chuẩn xác 100%", badgeType: "badge-correct", meaning: "= Linda is thinking of retiring early because she isn't happy at work anymore." },
+            { word: "Câu B", isCorrect: false, badgeText: "sai vị trí trạng từ", badgeType: "badge-wrong", meaning: "= đặt 'early' trước 'of retiring' là sai" },
+            { word: "Câu C", isCorrect: false, badgeText: "thiếu to be", badgeType: "badge-wrong", meaning: "= she thinking thiếu to be 'is'" },
+            { word: "Câu D", isCorrect: false, badgeText: "đảo lộn động từ", badgeType: "badge-wrong", meaning: "= 'retiring of thinking' hoàn toàn vô nghĩa" }
+          ],
+          whyCorrect: { ruleTitle: "Cấu trúc Think of doing sth & Mệnh đề chỉ nguyên nhân", detail: "1. Đang cân nhắc việc gì: <span class='exp-highlight-green'>S + is thinking of + V-ing</span> → thinking of retiring early.<br>2. Mệnh đề nguyên nhân: <span class='exp-highlight-green'>because she isn't happy at work anymore</span>." },
+          whyWrong: [
+            { word: "Câu B", reason: "early bổ nghĩa cho retiring phải đứng sau retiring." },
+            { word: "Câu C", reason: "thiếu trợ động từ is trong thì hiện tại tiếp diễn." },
+            { word: "Câu D", reason: "xáo trộn trật tự cụm động từ think of." }
+          ]
+        }
+      },
+      {
+        id: 39,
+        exTitle: "II. TỰ LUẬN - Rearrange the words/phrases to make meaningful sentences.",
+        question: "Question 11: Rearrange the words/phrases:<br><b>oil supplies / Some experts / say / will / the next 20 years./ start / to fall / within / that /</b>",
+        options: [
+          { key: "A", text: "Some experts say that oil supplies will start to fall within the next 20 years.", raw: "Some experts say that oil supplies will start to fall within the next 20 years." },
+          { key: "B", text: "Some experts say will oil supplies that start to fall within the next 20 years.", raw: "Some experts say will oil supplies that start to fall within the next 20 years." },
+          { key: "C", text: "Oil supplies some experts say that will start to fall within the next 20 years.", raw: "Oil supplies some experts say that will start to fall within the next 20 years." },
+          { key: "D", text: "Some experts say that within the next 20 years will oil supplies start to fall.", raw: "Some experts say that within the next 20 years will oil supplies start to fall." }
+        ],
+        correct: "A",
+        explanation: {
+          translation: "Một số chuyên gia cho rằng nguồn cung dầu mỏ sẽ bắt đầu sụt giảm trong vòng 20 năm tới.",
+          cards: [
+            { word: "Câu A", isCorrect: true, badgeText: "chuẩn ngữ pháp", badgeType: "badge-correct", meaning: "= Some experts say that oil supplies will start to fall within the next 20 years." },
+            { word: "Câu B", isCorrect: false, badgeText: "sai vị trí will", badgeType: "badge-wrong", meaning: "= đặt 'will' trước chủ ngữ 'oil supplies' là sai" },
+            { word: "Câu C", isCorrect: false, badgeText: "lộn xộn", badgeType: "badge-wrong", meaning: "= xáo trộn cấu trúc mệnh đề danh ngữ" },
+            { word: "Câu D", isCorrect: false, badgeText: "đảo ngữ sai", badgeType: "badge-wrong", meaning: "= đảo will lên trước chủ ngữ khi không cần thiết" }
+          ],
+          whyCorrect: { ruleTitle: "Mệnh đề danh ngữ sau động từ Say", detail: "Cấu trúc chuẩn: <span class='exp-highlight-green'>S + say that + S + will + V</span> → <span class='exp-highlight-green'>Some experts say that oil supplies will start to fall within the next 20 years</span>." },
+          whyWrong: [
+            { word: "Câu B", reason: "trật tự từ trong mệnh đề that không được đảo will lên đầu." },
+            { word: "Câu C", reason: "đưa oil supplies lên đầu câu làm vỡ cấu trúc câu." },
+            { word: "Câu D", reason: "đảo ngữ sai quy tắc." }
+          ]
+        }
+      },
+      {
+        id: 40,
+        exTitle: "II. TỰ LUẬN - Rearrange the words/phrases to make meaningful sentences.",
+        question: "Question 12: Rearrange the words/phrases:<br><b>achievements / in / information / technology / and /will / made /be/ scientists. / More / by</b>",
+        options: [
+          { key: "A", text: "More achievements in information and technology will be made by scientists.", raw: "More achievements in information and technology will be made by scientists." },
+          { key: "B", text: "More achievements in information technology will be made by scientists.", raw: "More achievements in information technology will be made by scientists." },
+          { key: "C", text: "Scientists will made more achievements in information technology.", raw: "Scientists will made more achievements in information technology." },
+          { key: "D", text: "More achievements will be made by scientists in information and technology.", raw: "More achievements will be made by scientists in information and technology." }
+        ],
+        correct: "B",
+        explanation: {
+          translation: "Nhiều thành tựu hơn nữa trong lĩnh vực công nghệ thông tin sẽ được tạo ra bởi các nhà khoa học.",
+          cards: [
+            { word: "Câu A", isCorrect: false, badgeText: "thừa 'and'", badgeType: "badge-wrong", meaning: "= 'information technology' là cụm cố định, không chèn 'and' vào giữa" },
+            { word: "Câu B", isCorrect: true, badgeText: "chuẩn 100%", badgeType: "badge-correct", meaning: "= More achievements in information technology will be made by scientists." },
+            { word: "Câu C", isCorrect: false, badgeText: "sai thì will made", badgeType: "badge-wrong", meaning: "= sau will phải là V nguyên mẫu (make), và đề bài cho be/made/by" },
+            { word: "Câu D", isCorrect: false, badgeText: "tách rời cụm từ", badgeType: "badge-wrong", meaning: "= đưa 'by scientists' lên trước cụm lĩnh vực làm câu lủng củng" }
+          ],
+          whyCorrect: { ruleTitle: "Thể bị động ở thì Tương lai đơn (Future Passive)", detail: "1. Chủ ngữ: <span class='exp-highlight-green'>More achievements in information technology</span> (Nhiều thành tựu trong công nghệ thông tin).<br>2. Bị động tương lai đơn: <span class='exp-highlight-green'>will be made by scientists</span>." },
+          whyWrong: [
+            { word: "Câu A", reason: "Information Technology (IT) không có liên từ 'and' ở giữa." },
+            { word: "Câu C", reason: "sai 'will made' và không sử dụng các từ đề bài cung cấp (be, by)." },
+            { word: "Câu D", reason: "trật tự cụm giới từ không tự nhiên." }
+          ]
+        }
+      }
+    ];
+
+    const userAnswers = {};
+
+    /* WEB AUDIO API */
+    let audioCtx = null;
+    function getAudioContext() {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      return audioCtx;
+    }
+
+    function playCorrectSound() {
+      try {
+        const ctx = getAudioContext();
+        const now = ctx.currentTime;
+        const osc1 = ctx.createOscillator();
+        const osc2 = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc1.type = 'sine'; osc2.type = 'triangle';
+        osc1.frequency.setValueAtTime(1046.50, now);
+        osc1.frequency.exponentialRampToValueAtTime(1318.51, now + 0.12);
+        osc2.frequency.setValueAtTime(1318.51, now);
+        osc2.frequency.exponentialRampToValueAtTime(1567.98, now + 0.12);
+        gain.gain.setValueAtTime(0.25, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.65);
+        osc1.connect(gain); osc2.connect(gain); gain.connect(ctx.destination);
+        osc1.start(now); osc2.start(now);
+        osc1.stop(now + 0.65); osc2.stop(now + 0.65);
+      } catch (e) { console.log(e); }
+    }
+
+    function playWrongSound() {
+      try {
+        const ctx = getAudioContext();
+        const now = ctx.currentTime;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(280, now);
+        osc.frequency.linearRampToValueAtTime(190, now + 0.15);
+        osc.frequency.linearRampToValueAtTime(130, now + 0.35);
+        gain.gain.setValueAtTime(0.2, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+        osc.connect(gain); gain.connect(ctx.destination);
+        osc.start(now); osc.stop(now + 0.45);
+      } catch (e) { console.log(e); }
+    }
+
+    function launchConfetti() {
+      if (typeof confetti === 'function') {
+        confetti({ particleCount: 75, spread: 75, origin: { y: 0.72 }, colors: ['#8854C0', '#FDCB6E', '#00C9A7', '#FF4757', '#0984E3'] });
+      }
+    }
+
+    function shuffleArray(array) {
+      const arr = [...array];
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    function updateProgressBar() {
+      const answeredCount = Object.keys(userAnswers).length;
+      let correctCount = 0;
+      quizData.forEach(q => { if (userAnswers[q.id] === q.correct) correctCount++; });
+      const total = quizData.length;
+      const percent = (answeredCount / total) * 100;
+      document.getElementById('star-score-text').textContent = `${correctCount} / ${total}`;
+      document.getElementById('progress-ratio-text').textContent = `${answeredCount} / ${total}`;
+      document.getElementById('progress-bar-fill').style.width = `${percent}%`;
+    }
+
+    function renderQuiz() {
+      const container = document.getElementById('quiz-container');
+      container.innerHTML = '';
+      let currentEx = "";
+
+      quizData.forEach((q, idx) => {
+        if (q.exTitle !== currentEx) {
+          currentEx = q.exTitle;
+          const divider = document.createElement('div');
+          divider.className = 'exercise-divider';
+          divider.innerHTML = `<span>📘</span> <span>${currentEx}</span>`;
+          container.appendChild(divider);
+        }
+
+        const card = document.createElement('div');
+        card.className = 'question-card';
+        card.id = `q-card-${q.id}`;
+        const shuffledOptions = shuffleArray(q.options);
+
+        const optionsHTML = `
+          <div class="options-grid ${shuffledOptions.length === 4 ? 'two-cols' : ''}">
+            ${shuffledOptions.map(opt => `
+              <button type="button" class="option-btn" id="btn-${q.id}-${opt.key}" onclick="handleSelectOption(${q.id}, '${opt.key}')">
+                <span class="option-key">${opt.key}</span>
+                <span class="option-text">${opt.text}</span>
+              </button>
+            `).join('')}
+          </div>
+        `;
+
+        const exp = q.explanation;
+        const explanationHTML = `
+          <div class="explanation-box" id="exp-${q.id}" style="display: none;">
+            <div class="exp-title">⚡ GIẢI THÍCH CHI TIẾT</div>
+            <div class="exp-translation-bubble">
+              <span class="icon">💭</span>
+              <span><strong>Dịch:</strong> ${exp.translation}</span>
+            </div>
+            <div class="exp-section-title">1. Phân tích 4 đáp án:</div>
+            <div class="analysis-grid">
+              ${exp.cards.map(c => `
+                <div class="analysis-card">
+                  <span class="analysis-word ${c.isCorrect ? 'green' : ''}">${c.word}</span>
+                  <span class="badge-pill ${c.badgeType}">${c.badgeText}</span>
+                  <span class="analysis-meaning">${c.meaning}</span>
+                </div>
+              `).join('')}
+            </div>
+            <div class="exp-rule-row">
+              <span class="check-label">2. ✅ TẠI SAO ĐÚNG?</span>
+              <span class="exp-rule-pill">${exp.whyCorrect.ruleTitle}:</span>
+              <span>${exp.whyCorrect.detail}</span>
+            </div>
+            <div class="exp-wrong-row">
+              <span class="cross-label">3. ❌ TẠI SAO SAI?</span>
+              ${exp.whyWrong.map(w => `<span class="exp-wrong-tag">${w.word}</span> -${w.reason}`).join(' ')}
+            </div>
+          </div>
+        `;
+
+        card.innerHTML = `
+          <div class="question-header">
+            <span class="question-num">Câu ${idx + 1}</span>
+            <span class="question-type-badge">Chấm điểm tức thì</span>
+          </div>
+          <div class="question-content">${q.question}</div>
+          ${optionsHTML}
+          ${explanationHTML}
+        `;
+        container.appendChild(card);
+      });
+
+      updateProgressBar();
+    }
+
+    function handleSelectOption(qId, selectedKey) {
+      if (userAnswers[qId] !== undefined) return;
+      const q = quizData.find(item => item.id === qId);
+      userAnswers[qId] = selectedKey;
+
+      const isCorrect = (selectedKey === q.correct);
+      const selectedBtn = document.getElementById(`btn-${qId}-${selectedKey}`);
+
+      if (isCorrect) {
+        selectedBtn.classList.add('correct');
+        playCorrectSound();
+        launchConfetti();
+      } else {
+        selectedBtn.classList.add('wrong');
+        playWrongSound();
+        const correctBtn = document.getElementById(`btn-${qId}-${q.correct}`);
+        if (correctBtn) correctBtn.classList.add('correct');
+      }
+
+      q.options.forEach(opt => {
+        const b = document.getElementById(`btn-${qId}-${opt.key}`);
+        if (b) b.disabled = true;
+      });
+
+      const expBox = document.getElementById(`exp-${qId}`);
+      if (expBox) expBox.style.display = 'block';
+
+      updateProgressBar();
+    }
+
+    function submitQuiz() {
+      let score = 0;
+      quizData.forEach(q => { if (userAnswers[q.id] === q.correct) score++; });
+      const total = quizData.length;
+      const percentage = (score / total) * 100;
+      let emoji = '🌟';
+      let message = '';
+
+      if (percentage < 50) {
+        emoji = '💪';
+        message = '“Điểm lần này chưa cao lắm, con cố gắng đọc kỹ giải thích đáp án và làm lại nha. Cô tin con sẽ làm tốt hơn ở lần sau!”<br><br><strong>— Ms Lê Hằng English —</strong>';
+      } else if (percentage >= 50 && percentage < 90) {
+        emoji = '👏';
+        message = '“Con đã có tiến bộ khá ổn rồi, con cố gắng đọc kỹ giải thích đáp án và làm lại nha. Cô tin con sẽ làm tốt hơn ở lần sau!”<br><br><strong>— Ms Lê Hằng English —</strong>';
+      } else {
+        emoji = '👑';
+        message = '“Làm tốt lắm, con cố gắng ring điểm 10 ở lần sau nha!”<br><br><strong>— Ms Lê Hằng English —</strong>';
+        launchConfetti();
+      }
+
+      document.getElementById('result-emoji').innerHTML = emoji;
+      document.getElementById('result-score').textContent = `${score} / ${total} CÂU ĐÚNG (${Math.round(percentage)}%)`;
+      document.getElementById('result-feedback').innerHTML = message;
+      document.getElementById('result-modal').style.display = 'flex';
+    }
+
+    function retryQuiz() {
+      document.getElementById('result-modal').style.display = 'none';
+      for (const key in userAnswers) delete userAnswers[key];
+      renderQuiz();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      renderQuiz();
+    });
+  </script>
+</body>
+</html>
